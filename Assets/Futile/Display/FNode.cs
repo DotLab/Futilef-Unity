@@ -55,7 +55,7 @@ public class FNode
 		#endif 
 	}
 	
-	protected void AddEnabler(FNodeEnabler enabler)
+	public void AddEnabler(FNodeEnabler enabler)
 	{
 		if(_enablers == null) _enablers = new List<FNodeEnabler>();
 		
@@ -67,7 +67,7 @@ public class FNode
 		}
 	}
 	
-	protected void RemoveEnabler(FNodeEnabler enabler)
+	public void RemoveEnabler(FNodeEnabler enabler)
 	{
 		if(_enablers == null) return;
 		
@@ -79,7 +79,7 @@ public class FNode
 		_enablers.Remove(enabler);
 	}
 	
-	protected void RemoveEnablerOfType(Type enablerType)
+	public void RemoveEnablerOfType(Type enablerType)
 	{
 		if(_enablers == null) return;
 		
@@ -117,6 +117,17 @@ public class FNode
 	public void RemoveListenForOrientationChange()
 	{	
 		RemoveEnablerOfType(typeof(FNodeEnablerForOrientationChange));
+	}
+
+	public void ListenForPreUpdate(Futile.FutileUpdateDelegate handleUpdateCallback)
+	{
+		RemoveEnablerOfType(typeof(FNodeEnablerForPreUpdate));
+		AddEnabler(new FNodeEnablerForPreUpdate(handleUpdateCallback));
+	}
+	
+	public void RemoveListenForPreUpdate()
+	{	
+		RemoveEnablerOfType(typeof(FNodeEnablerForPreUpdate));
 	}
 	
 	public void ListenForUpdate(Futile.FutileUpdateDelegate handleUpdateCallback)
@@ -646,7 +657,26 @@ public class FNode
 		get {return _stage;}
 		set {_stage = value;}
 	}
-	
+
+	public Vector2 GetPositionRelativeToAncestor(FContainer ancestor)
+	{
+		FNode target = this;
+
+		Vector2 position = new Vector2(0,0);
+		
+		FContainer container;
+		
+		while(true)
+		{
+			position += target.GetPosition();
+			container = target.container;
+			if(container == null) break;
+			if(container == ancestor) break;
+			target = container;
+		}
+		
+		return position;
+	}
 	
 	//use node.LocalToLocal to use a point from a different coordinate space
 	public void RotateAroundPointRelative(Vector2 localPoint, float relativeDegrees)
@@ -715,5 +745,10 @@ public class FNode
 	public Vector2 GetPosition()
 	{
 		return new Vector2(_x,_y);	
+	}
+
+	public bool isOnStage
+	{
+		get {return _isOnStage;}
 	}
 }

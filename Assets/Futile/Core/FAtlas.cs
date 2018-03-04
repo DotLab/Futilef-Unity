@@ -47,6 +47,12 @@ public class FAtlasElement
 		
 		return element;
 	}
+
+	public void UseTrimmedSizeAsBounds()//this will alter the element so that it uses the trimmed area as its bounds
+	{
+		sourceSize.x = sourceRect.width; 
+		sourceSize.y = sourceRect.height;
+	}
 }
 
 public class FAtlas
@@ -67,6 +73,8 @@ public class FAtlas
 	private bool _isSingleImage;
 	
 	private bool _isTextureAnAsset = false;
+
+	private FAtlasElement _fullElement; //an element that represents the entire atlas
 	
 	//TODO: allow users to pass a dictionary of pre-built atlas data if they want
 	public FAtlas (string name, Texture texture, int index) //single image
@@ -79,7 +87,7 @@ public class FAtlas
 		_texture = texture;
 		_textureSize = new Vector2(_texture.width,_texture.height);
 		
-		CreateAtlasFromSingleImage();
+		CreateElementForEntireAtlas();
 	}
 	
 	public FAtlas (string name, string dataPath, Texture texture, int index) //atlas with data path
@@ -94,6 +102,7 @@ public class FAtlas
 		
 		_isSingleImage = false;
 		LoadAtlasData();
+		CreateElementForEntireAtlas();
 	}
 	
 	public FAtlas (string name, string imagePath, string dataPath, int index, bool shouldLoadAsSingleImage)
@@ -109,12 +118,13 @@ public class FAtlas
 		if(shouldLoadAsSingleImage)
 		{
 			_isSingleImage = true;
-			CreateAtlasFromSingleImage();
+			CreateElementForEntireAtlas();
 		}
 		else
 		{
 			_isSingleImage = false;
 			LoadAtlasData();
+			CreateElementForEntireAtlas();
 		}
 	}
 	
@@ -230,7 +240,7 @@ public class FAtlas
 		Resources.UnloadAsset(dataAsset);
 	}
 	
-	private void CreateAtlasFromSingleImage()
+	private void CreateElementForEntireAtlas()
 	{
 		FAtlasElement element = new FAtlasElement();
 		
@@ -260,6 +270,8 @@ public class FAtlas
 		
 		_elements.Add (element);
 		_elementsByName.Add (element.name, element);
+
+		_fullElement = element;
 	}
 
 	public void UpdateElement (FAtlasElement element, float leftX, float bottomY, float pixelWidth, float pixelHeight)
@@ -319,9 +331,13 @@ public class FAtlas
 
 	public FAtlasElement CreateNamedElement (string elementName, float leftX, float bottomY, float pixelWidth, float pixelHeight)
 	{
-		FAtlasElement element = _elementsByName[elementName];
+		FAtlasElement element;
 
-		if(element == null) //it doesn't exist, so create it (if it does exist we just update it)
+		if(_elementsByName.ContainsKey(elementName)) 
+		{
+			element = _elementsByName[elementName];
+		}
+		else //it doesn't exist, so create it (if it does exist we just update it)
 		{
 			element = new FAtlasElement();
 			element.name = elementName;
@@ -385,6 +401,9 @@ public class FAtlas
 	{
 		get {return _isSingleImage;}	
 	}
+
+	public FAtlasElement fullElement
+	{
+		get {return _fullElement;}	
+	}
 }
-
-

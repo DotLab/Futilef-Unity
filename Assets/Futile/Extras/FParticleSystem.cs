@@ -3,17 +3,17 @@ using UnityEngine;
 
 public class FParticleSystem : FFacetNode
 {
-	private int _maxParticleCount;
-	private FParticle[] _particles;
-	private FParticle[] _availableParticles;
-	private int _availableParticleCount;
-	private int _unavailableParticleIndex;
-	private bool _isMeshDirty;
+	protected int _maxParticleCount;
+	protected FParticle[] _particles;
+	protected FParticle[] _availableParticles;
+	protected int _availableParticleCount;
+	protected int _unavailableParticleIndex;
+	protected bool _isMeshDirty;
 	
+	protected bool _hasInited = false;
+
 	public float accelX = 0.0f;
 	public float accelY = 0.0f;
-	
-	private bool _hasInited = false;
 
 	public bool shouldNewParticlesOverwriteExistingParticles = true;
 	
@@ -81,12 +81,14 @@ public class FParticleSystem : FFacetNode
 		float lifetime = particleDefinition.lifetime;
 		
 		particle.timeRemaining = lifetime;
+		particle.delayRemaining = particleDefinition.delay;
 	
 		particle.x = particleDefinition.x;
 		particle.y = particleDefinition.y;
 		particle.speedX = particleDefinition.speedX;
 		particle.speedY = particleDefinition.speedY;
-		
+
+		particle.startScale = particleDefinition.startScale;
 		particle.scale = particleDefinition.startScale;
 
 		float lifetimeInverse = 1.0f / lifetime; //we'll use this a few times, so invert it because multiplication is faster
@@ -171,7 +173,7 @@ public class FParticleSystem : FFacetNode
 		}
 	}
 
-	private void HandleUpdate()
+	virtual protected void HandleUpdate()
 	{
 		float deltaTime = Time.deltaTime;
 
@@ -194,6 +196,21 @@ public class FParticleSystem : FFacetNode
 			}
 			else //do the update!
 			{
+				if(particle.delayRemaining > 0)
+				{
+					particle.delayRemaining -= deltaTime;
+
+					if(particle.delayRemaining <= 0)
+					{
+						particle.scale = particle.startScale;
+					}
+					else 
+					{
+						particle.scale = 0;//don't show it yet
+						continue;
+					}
+				}
+
 				particle.timeRemaining -= deltaTime;
 
 				particle.color.r += particle.redDeltaPerSecond * deltaTime;
@@ -364,6 +381,7 @@ public class FParticleDefinition
 	public FAtlasElement element;
 	
 	public float lifetime = 1.0f;
+	public float delay = 0.0f;
 	
 	public float x = 0.0f;
 	public float y = 0.0f;
@@ -379,6 +397,7 @@ public class FParticleDefinition
 
 	public float startRotation = 0;
 	public float endRotation = 0;
+
 	
 	public FParticleDefinition(string elementName)
 	{
@@ -399,13 +418,15 @@ public class FParticleDefinition
 public class FParticle
 {
 	public float timeRemaining;
+	public float delayRemaining;
 	
 	public float x;
 	public float y;
 	
 	public float speedX;
 	public float speedY;
-	
+
+	public float startScale;
 	public float scale;
 	public float scaleDeltaPerSecond;
 	
