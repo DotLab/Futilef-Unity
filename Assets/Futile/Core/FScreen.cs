@@ -330,7 +330,7 @@ public class FScreen
 		halfWidth = width/2.0f;
 		halfHeight = height/2.0f;
 		
-		Futile.instance.UpdateCameraPosition(); 	
+		Futile.Instance.UpdateCameraPosition(); 	
 	}
 	
 	public float originX
@@ -341,7 +341,7 @@ public class FScreen
 			if(_originX != value)
 			{
 				_originX = value;
-				Futile.instance.UpdateCameraPosition();
+				Futile.Instance.UpdateCameraPosition();
 			}
 		}
 	}
@@ -354,7 +354,7 @@ public class FScreen
 			if(_originY != value)
 			{
 				_originY = value;
-				Futile.instance.UpdateCameraPosition();
+				Futile.Instance.UpdateCameraPosition();
 			}
 		}
 	}

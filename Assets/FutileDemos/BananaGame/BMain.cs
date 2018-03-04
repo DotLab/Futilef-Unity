@@ -46,7 +46,7 @@ public class BMain : MonoBehaviour
 		
 		fparams.origin = new Vector2(0.5f,0.5f);
 		
-		Futile.instance.Init (fparams);
+		Futile.Instance.Init (fparams);
 		
 		Futile.atlasManager.LoadAtlas("Atlases/BananaLargeAtlas");
 		Futile.atlasManager.LoadAtlas("Atlases/BananaGameAtlas");

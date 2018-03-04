@@ -29,12 +29,12 @@ public class FNodeEnablerForPreUpdate : FNodeEnabler
 	
 	override public void Connect()
 	{
-		Futile.instance.SignalPreUpdate += handleUpdateCallback;
+		Futile.Instance.SignalPreUpdate += handleUpdateCallback;
 	}
 	
 	override public void Disconnect()
 	{
-		Futile.instance.SignalPreUpdate -= handleUpdateCallback;
+		Futile.Instance.SignalPreUpdate -= handleUpdateCallback;
 	}
 }
 
@@ -50,12 +50,12 @@ public class FNodeEnablerForUpdate : FNodeEnabler
 	
 	override public void Connect()
 	{
-		Futile.instance.SignalUpdate += handleUpdateCallback;
+		Futile.Instance.SignalUpdate += handleUpdateCallback;
 	}
 	
 	override public void Disconnect()
 	{
-		Futile.instance.SignalUpdate -= handleUpdateCallback;
+		Futile.Instance.SignalUpdate -= handleUpdateCallback;
 	}
 }
 
@@ -70,12 +70,12 @@ public class FNodeEnablerForAfterUpdate : FNodeEnabler
 	
 	override public void Connect()
 	{
-		Futile.instance.SignalAfterUpdate += handleUpdateCallback;
+		Futile.Instance.SignalAfterUpdate += handleUpdateCallback;
 	}
 	
 	override public void Disconnect()
 	{
-		Futile.instance.SignalAfterUpdate -= handleUpdateCallback;
+		Futile.Instance.SignalAfterUpdate -= handleUpdateCallback;
 	}
 }
 
@@ -90,12 +90,12 @@ public class FNodeEnablerForLateUpdate : FNodeEnabler
 	
 	override public void Connect()
 	{
-		Futile.instance.SignalLateUpdate += handleUpdateCallback;
+		Futile.Instance.SignalLateUpdate += handleUpdateCallback;
 	}
 	
 	override public void Disconnect()
 	{
-		Futile.instance.SignalLateUpdate -= handleUpdateCallback;
+		Futile.Instance.SignalLateUpdate -= handleUpdateCallback;
 	}
 }
 
@@ -110,12 +110,12 @@ public class FNodeEnablerForAfterDraw : FNodeEnabler
 	
 	override public void Connect()
 	{
-		Futile.instance.SignalAfterDraw += handleUpdateCallback;
+		Futile.Instance.SignalAfterDraw += handleUpdateCallback;
 	}
 	
 	override public void Disconnect()
 	{
-		Futile.instance.SignalAfterDraw -= handleUpdateCallback;
+		Futile.Instance.SignalAfterDraw -= handleUpdateCallback;
 	}
 }
 public class FNodeEnablerForFixedUpdate : FNodeEnabler
@@ -129,12 +129,12 @@ public class FNodeEnablerForFixedUpdate : FNodeEnabler
 	
 	override public void Connect()
 	{
-		Futile.instance.SignalFixedUpdate += handleUpdateCallback;
+		Futile.Instance.SignalFixedUpdate += handleUpdateCallback;
 	}
 	
 	override public void Disconnect()
 	{
-		Futile.instance.SignalFixedUpdate -= handleUpdateCallback;
+		Futile.Instance.SignalFixedUpdate -= handleUpdateCallback;
 	}
 }
 

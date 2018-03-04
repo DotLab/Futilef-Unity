@@ -45,7 +45,7 @@ public class FGameObjectNode : FNode, FRenderableLayerInterface
 	{
 		if(_isOnStage)
 		{
-			_gameObject.transform.parent = Futile.instance.gameObject.transform;
+			_gameObject.transform.parent = Futile.Instance.gameObject.transform;
 			
 			if(_gameObject.GetComponent<Renderer>() != null && _gameObject.GetComponent<Renderer>().material != null)
 			{
@@ -73,7 +73,7 @@ public class FGameObjectNode : FNode, FRenderableLayerInterface
 			base.HandleAddedToStage();
 			
 			_stage.HandleFacetsChanged();
-			_gameObject.transform.parent = Futile.instance.gameObject.transform;
+			_gameObject.transform.parent = Futile.Instance.gameObject.transform;
 			UpdateGameObject();
 		}
 	}
