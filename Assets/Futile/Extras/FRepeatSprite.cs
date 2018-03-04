@@ -83,10 +83,10 @@ public class FRepeatSprite : FSprite
 			Vector2[] uvs = _renderLayer.uvs;
 			Color[] colors = _renderLayer.colors;
 			
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0], _localVertices[0],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex1], _localVertices[1],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex2], _localVertices[2],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex3], _localVertices[3],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0], _localVertices[0],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex1], _localVertices[1],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex2], _localVertices[2],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex3], _localVertices[3],0);
 			
 			//this uv shifting is where the magic happens!
 			uvs[vertexIndex0] = new Vector2(_scrollX/_textureWidth, _scrollY/_textureHeight + _height/_textureHeight);

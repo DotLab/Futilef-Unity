@@ -276,10 +276,10 @@ public class FSliceSprite : FSprite
 				Vector2[] uvs = _renderLayer.uvs;
 				Color[] colors = _renderLayer.colors;
 				
-				_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0], _localVertices[sliceVertIndex],0);
-				_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex1], _localVertices[sliceVertIndex+1],0);
-				_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex2], _localVertices[sliceVertIndex+2],0);
-				_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex3], _localVertices[sliceVertIndex+3],0);
+				_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0], _localVertices[sliceVertIndex],0);
+				_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex1], _localVertices[sliceVertIndex+1],0);
+				_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex2], _localVertices[sliceVertIndex+2],0);
+				_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex3], _localVertices[sliceVertIndex+3],0);
 				
 				uvs[vertexIndex0] = _uvVertices[sliceVertIndex];
 				uvs[vertexIndex1] = _uvVertices[sliceVertIndex+1];

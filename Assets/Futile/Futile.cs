@@ -4,76 +4,69 @@ using System.Collections.Generic;
 
 //FutileEngine by Matt Rix -
 public class Futile : MonoBehaviour {
-	static public Futile Instance;
+	public static Futile Instance;
 
-	static public FScreen screen;
+	public static FScreen screen;
+
+	public static FAtlasManager atlasManager;
+	public static FTouchManager touchManager;
+
+	public static FStage stage;
 	
-	static public FAtlasManager atlasManager;
-	
-	static public FStage stage;
-	
-	static public FTouchManager touchManager;
-	
-	static public bool isOpenGL;
 	//assigned in Awake
-	
-	static public int baseRenderQueueDepth = 3000;
-	
-	static public bool shouldRemoveAtlasElementFileExtensions = true;
-	
+	public static bool isOpenGL;
+	public static int baseRenderQueueDepth = 3000;
+	public static bool shouldRemoveAtlasElementFileExtensions = true;
+
 	//These are set in FScreen
-	static public float displayScale;
 	//set based on the resolution setting (the unit to pixel scale)
-	static public float displayScaleInverse;
+	public static float displayScale;
 	// 1/displayScale
+	public static float displayScaleInverse;
 	
-	static public float resourceScale;
 	//set based on the resolution setting (the scale of assets)
-	static public float resourceScaleInverse;
+	public static float resourceScale;
 	// 1/resourceScale
+	public static float resourceScaleInverse;
 	
-	static public float screenPixelOffset;
 	//set based on whether it's openGL or not
+	public static float screenPixelOffset;
 	
-	static public string resourceSuffix;
 	//set based on the resLevel
+	public static string resourceSuffix;
 	
 	//default element, a 16x16 white texture
-	static public FAtlasElement whiteElement;
-	static public Color white = Color.white;
+	public static FAtlasElement whiteElement;
 	//unlike Futile.white, it doesn't create a new color every time
+	public static Color white = Color.white;
 	
 	static internal int nextRenderLayerDepth = 0;
-	
-	
-	static private List<FStage> _stages;
-	static private bool _isDepthChangeNeeded = false;
-	
-	public delegate void FutileUpdateDelegate();
 
-	public event FutileUpdateDelegate SignalPreUpdate;
-	public event FutileUpdateDelegate SignalUpdate;
-	public event FutileUpdateDelegate SignalAfterUpdate;
-	public event FutileUpdateDelegate SignalAfterDraw;
-	public event FutileUpdateDelegate SignalFixedUpdate;
-	public event FutileUpdateDelegate SignalLateUpdate;
+	static List<FStage> _stages;
+	static bool _isDepthChangeNeeded;
+
+	public event Action SignalPreUpdate;
+	public event Action SignalUpdate;
+	public event Action SignalAfterUpdate;
+	public event Action SignalAfterDraw;
+	public event Action SignalFixedUpdate;
+	public event Action SignalLateUpdate;
     
 	//configuration values
 	public bool shouldTrackNodesInRXProfiler = false;
     
-	private GameObject _cameraHolder;
-	private Camera _camera;
+	GameObject _cameraHolder;
+	Camera _camera;
 
-	private bool _shouldRunGCNextUpdate = false;
 	//use Futile.instance.ForceGarbageCollectionNextUpdate();
+	bool _shouldRunGCNextUpdate = false;
 
-	private FutileParams _futileParams;
+	FutileParams _futileParams;
     
-	private List<FDelayedCallback> _delayedCallbacks = new List<FDelayedCallback>();
-
+	List<FDelayedCallback> _delayedCallbacks = new List<FDelayedCallback>();
 
 	// Use this for initialization
-	private void Awake() {
+	void Awake() {
 		Instance = this;
 		isOpenGL = SystemInfo.graphicsDeviceVersion.Contains("OpenGL");
 		enabled = false;
@@ -90,11 +83,8 @@ public class Futile : MonoBehaviour {
 		FFacetType.Init(); //set up the types of facets (Quads, Triangles, etc)
 		
 		screen = new FScreen(_futileParams);
-		
-		//
+
 		//Camera setup from https://github.com/prime31/UIToolkit/blob/master/Assets/Plugins/UIToolkit/UI.cs
-		//
-		
 		_cameraHolder = new GameObject();
 		_cameraHolder.transform.parent = gameObject.transform;
 		
@@ -115,12 +105,10 @@ public class Futile : MonoBehaviour {
 		UpdateCameraPosition();
 		
 		touchManager = new FTouchManager();
-		
 		atlasManager = new FAtlasManager();
 		
 		CreateDefaultAtlases();
-		
-		
+
 		_stages = new List<FStage>();
 		
 		stage = new FStage("Futile.stage");
@@ -129,7 +117,7 @@ public class Futile : MonoBehaviour {
 	}
 
 	public Camera CreateNewCamera(string name) {
-		GameObject camGO = new GameObject();
+		var camGO = new GameObject();
 		camGO.transform.parent = gameObject.transform;
 
 		Camera cam = camGO.AddComponent<Camera>();
@@ -180,7 +168,7 @@ public class Futile : MonoBehaviour {
 	public void CreateDefaultAtlases() {
 		//atlas of plain white
 		
-		Texture2D plainWhiteTex = new Texture2D(16, 16);
+		var plainWhiteTex = new Texture2D(16, 16);
 		plainWhiteTex.filterMode = FilterMode.Bilinear;
 		plainWhiteTex.wrapMode = TextureWrapMode.Clamp;
 		
@@ -208,7 +196,7 @@ public class Futile : MonoBehaviour {
 		whiteElement = atlasManager.GetElementWithName("Futile_White");
 	}
 	
-	static public void AddStage(FStage stageToAdd) {
+	public static void AddStage(FStage stageToAdd) {
 		int stageIndex = _stages.IndexOf(stageToAdd);
 		
 		if (stageIndex == -1) { //add it if it's not a stage
@@ -222,7 +210,7 @@ public class Futile : MonoBehaviour {
 		}
 	}
 	
-	static public void AddStageAtIndex(FStage stageToAdd, int newIndex) {
+	public static void AddStageAtIndex(FStage stageToAdd, int newIndex) {
 		int stageIndex = _stages.IndexOf(stageToAdd);
 		
 		if (newIndex > _stages.Count) { //if it's past the end, make it at the end
@@ -248,7 +236,7 @@ public class Futile : MonoBehaviour {
 		UpdateStageIndices();
 	}
 	
-	static public void RemoveStage(FStage stageToRemove) {
+	public static void RemoveStage(FStage stageToRemove) {
 		stageToRemove.HandleRemovedFromFutile();
 		stageToRemove.index = -1;
 		
@@ -257,7 +245,7 @@ public class Futile : MonoBehaviour {
 		UpdateStageIndices();
 	}
 
-	static public void UpdateStageIndices() {
+	public static void UpdateStageIndices() {
 		int stageCount = _stages.Count;
 		for (int s = 0; s < stageCount; s++) {
 			_stages[s].index = s;	
@@ -273,11 +261,11 @@ public class Futile : MonoBehaviour {
 		}
 	}
 	
-	static public int GetStageCount() {
+	public static int GetStageCount() {
 		return _stages.Count;
 	}
 	
-	static public FStage GetStageAt(int index) {
+	public static FStage GetStageAt(int index) {
 		return _stages[index];
 	}
 
@@ -402,13 +390,13 @@ public class Futile : MonoBehaviour {
 	}
 	
 	[Obsolete("Futile.width is obsolete, use Futile.screen.width instead")]
-	static public float width {
+	public static float width {
 		get { throw new NotSupportedException("Obsolete! Use Futile.screen.width instead"); }
 		set { throw new NotSupportedException("Obsolete! Use Futile.screen.width instead"); }
 	}
 	
 	[Obsolete("Futile.height is obsolete, use Futile.screen.height instead")]
-	static public float height {
+	public static float height {
 		get { throw new NotSupportedException("Obsolete! Use Futile.screen.height instead"); }
 		set { throw new NotSupportedException("Obsolete! Use Futile.screen.height instead"); }
 	}

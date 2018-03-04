@@ -302,12 +302,12 @@ public class FParticleSystem : FFacetNode
 			Vector2[] uvs = _renderLayer.uvs;
 			Color[] colors = _renderLayer.colors;
 		
-			float a = _concatenatedMatrix.a;
-			float b = _concatenatedMatrix.b;
-			float c = _concatenatedMatrix.c;
-			float d = _concatenatedMatrix.d;
-			float tx = _concatenatedMatrix.tx;
-			float ty = _concatenatedMatrix.ty;
+			float a = _concatenatedMatrix.m00;
+			float b = _concatenatedMatrix.m10;
+			float c = _concatenatedMatrix.m01;
+			float d = _concatenatedMatrix.m11;
+			float tx = _concatenatedMatrix.m02;
+			float ty = _concatenatedMatrix.m12;
 				
 //			Vector2 unitVector = _concatenatedMatrix.GetTransformedUnitVector();
 //			float ux = unitVector.x;

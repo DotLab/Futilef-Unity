@@ -68,10 +68,10 @@ public class FWipeSprite : FSprite
 				_localVertices[3].y + localHeight * useBottom 
 			);
 			
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0], localVector0,0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex1], localVector1,0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex2], localVector2,0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex3], localVector3,0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0], localVector0,0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex1], localVector1,0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex2], localVector2,0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex3], localVector3,0);
 			
 			float uvWidth = (_element.uvTopRight.x - _element.uvTopLeft.x);
 			float uvHeight = (_element.uvTopRight.y - _element.uvBottomRight.y);

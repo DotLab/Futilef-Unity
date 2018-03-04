@@ -157,7 +157,7 @@ public class FGameObjectNode : FNode, FRenderableLayerInterface
 		{	
 			FMatrix matrix = this.screenConcatenatedMatrix;
 			
-			if(_shouldLinkPosition) _gameObject.transform.localPosition = matrix.GetVector3FromLocalVector2(Vector2.zero,0);
+			if(_shouldLinkPosition) _gameObject.transform.localPosition = matrix.Transform3(Vector2.zero,0);
 			if(_shouldLinkRotation)
 			{	
 				float newRotation = matrix.GetRotation();
@@ -172,8 +172,8 @@ public class FGameObjectNode : FNode, FRenderableLayerInterface
 
 				_gameObject.transform.localScale = new Vector3
 				(
-					_initialGameObjectScale.x * matrix.GetScaleX(), 
-					_initialGameObjectScale.y * matrix.GetScaleY(), 
+					_initialGameObjectScale.x * matrix.GetScalingX(), 
+					_initialGameObjectScale.y * matrix.GetScalingY(), 
 					_initialGameObjectScale.z
 				);
 			}

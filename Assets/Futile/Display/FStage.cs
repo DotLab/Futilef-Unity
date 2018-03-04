@@ -42,7 +42,7 @@ public class FStage : FContainer
 		_renderer = new FRenderer(this);
 		
 		_identityMatrix = new FMatrix();
-		_identityMatrix.ResetToIdentity();
+		_identityMatrix.Identity();
 		
 		_inverseConcatenatedMatrix = new FMatrix();
 		_screenConcatenatedMatrix = new FMatrix();
@@ -78,10 +78,10 @@ public class FStage : FContainer
 		{
 			_isMatrixDirty = false;
 			
-			_matrix.SetScaleThenRotate(_x,_y,_scaleX*_visibleScale,_scaleY*_visibleScale,_rotation * -RXMath.DTOR);
-			_concatenatedMatrix.CopyValues(_matrix);	
+			_matrix.FromScalingRotationTranslation(_x,_y,_scaleX*_visibleScale,_scaleY*_visibleScale,_rotation * -RXMath.DTOR);
+			_concatenatedMatrix.Copy(_matrix);	
 			
-			_inverseConcatenatedMatrix.InvertAndCopyValues(_concatenatedMatrix);
+			_inverseConcatenatedMatrix.FromInvert(_concatenatedMatrix);
 			
 			_doesRendererNeedTransformChange = true;
 		}
@@ -151,9 +151,9 @@ public class FStage : FContainer
 		
 		Vector2 stagePosition = GlobalToLocal(globalPosition);
 		
-		_followMatrix.SetScaleThenRotate(0,0,_scaleX,_scaleY,_rotation * -RXMath.DTOR);
+		_followMatrix.FromScalingRotationTranslation(0,0,_scaleX,_scaleY,_rotation * -RXMath.DTOR);
 		
-		Vector2 resultPos = _followMatrix.GetNewTransformedVector(stagePosition);
+		Vector2 resultPos = _followMatrix.Transform2(stagePosition);
 		this.x = -resultPos.x;
 		this.y = -resultPos.y;
 	}
@@ -177,7 +177,7 @@ public class FStage : FContainer
 			
 			if(_shouldFollowScale)
 			{
-				this.scale = 1.0f/_followTarget.concatenatedMatrix.GetScaleX();
+				this.scale = 1.0f/_followTarget.concatenatedMatrix.GetScalingX();
 			}
 			
 			if(_shouldFollowRotation)
@@ -185,9 +185,9 @@ public class FStage : FContainer
 				this.rotation = _followTarget.concatenatedMatrix.GetRotation() * RXMath.RTOD;
 			}
 			
-			_followMatrix.SetScaleThenRotate(0,0,_scaleX,_scaleY,_rotation * -RXMath.DTOR);
+			_followMatrix.FromScalingRotationTranslation(0,0,_scaleX,_scaleY,_rotation * -RXMath.DTOR);
 			
-			Vector2 pos = _followMatrix.GetNewTransformedVector(new Vector2(_followTarget.concatenatedMatrix.tx,_followTarget.concatenatedMatrix.ty));
+			Vector2 pos = _followMatrix.Transform2(new Vector2(_followTarget.concatenatedMatrix.m02,_followTarget.concatenatedMatrix.m12));
 			
 			this.x = -pos.x;
 			this.y = -pos.y;

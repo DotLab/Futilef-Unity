@@ -108,7 +108,7 @@ public class FNode {
 		RemoveEnablerOfType(typeof(FNodeEnablerForOrientationChange));
 	}
 
-	public void ListenForPreUpdate(Futile.FutileUpdateDelegate handleUpdateCallback) {
+	public void ListenForPreUpdate(Action handleUpdateCallback) {
 		RemoveEnablerOfType(typeof(FNodeEnablerForPreUpdate));
 		AddEnabler(new FNodeEnablerForPreUpdate(handleUpdateCallback));
 	}
@@ -117,7 +117,7 @@ public class FNode {
 		RemoveEnablerOfType(typeof(FNodeEnablerForPreUpdate));
 	}
 	
-	public void ListenForUpdate(Futile.FutileUpdateDelegate handleUpdateCallback) {
+	public void ListenForUpdate(Action handleUpdateCallback) {
 		RemoveEnablerOfType(typeof(FNodeEnablerForUpdate));
 		AddEnabler(new FNodeEnablerForUpdate(handleUpdateCallback));
 	}
@@ -126,7 +126,7 @@ public class FNode {
 		RemoveEnablerOfType(typeof(FNodeEnablerForUpdate));
 	}
 
-	public void ListenForAfterUpdate(Futile.FutileUpdateDelegate handleUpdateCallback) {
+	public void ListenForAfterUpdate(Action handleUpdateCallback) {
 		RemoveEnablerOfType(typeof(FNodeEnablerForAfterUpdate));
 		AddEnabler(new FNodeEnablerForAfterUpdate(handleUpdateCallback));
 	}
@@ -135,7 +135,7 @@ public class FNode {
 		RemoveEnablerOfType(typeof(FNodeEnablerForAfterUpdate));
 	}
 	
-	public void ListenForLateUpdate(Futile.FutileUpdateDelegate handleUpdateCallback) {
+	public void ListenForLateUpdate(Action handleUpdateCallback) {
 		RemoveEnablerOfType(typeof(FNodeEnablerForLateUpdate));
 		AddEnabler(new FNodeEnablerForLateUpdate(handleUpdateCallback));
 	}
@@ -144,7 +144,7 @@ public class FNode {
 		RemoveEnablerOfType(typeof(FNodeEnablerForLateUpdate));
 	}
 	
-	public void ListenForFixedUpdate(Futile.FutileUpdateDelegate handleUpdateCallback) {
+	public void ListenForFixedUpdate(Action handleUpdateCallback) {
 		RemoveEnablerOfType(typeof(FNodeEnablerForFixedUpdate));
 		AddEnabler(new FNodeEnablerForFixedUpdate(handleUpdateCallback));
 	}
@@ -221,7 +221,7 @@ public class FNode {
 		float offsetX = -Futile.screen.originX * Futile.screen.pixelWidth;
 		float offsetY = -Futile.screen.originY * Futile.screen.pixelHeight;
 		
-		localVector = this.screenConcatenatedMatrix.GetNewTransformedVector(localVector);
+		localVector = this.screenConcatenatedMatrix.Transform2(localVector);
 		
 		return new Vector2(
 			(localVector.x / Futile.displayScaleInverse) - offsetX, 
@@ -243,14 +243,14 @@ public class FNode {
 			(screenVector.y + offsetY) * Futile.displayScaleInverse
 		);
 		
-		return this.screenInverseConcatenatedMatrix.GetNewTransformedVector(screenVector);
+		return this.screenInverseConcatenatedMatrix.Transform2(screenVector);
 	}
 	
 	public Vector2 LocalToStage(Vector2 localVector) {
 		if (_container != null) _container.UpdateMatrix();
 		_isMatrixDirty = true;
 		UpdateMatrix();
-		return _concatenatedMatrix.GetNewTransformedVector(localVector);
+		return _concatenatedMatrix.Transform2(localVector);
 	}
 	
 	public Vector2 StageToLocal(Vector2 globalVector) {
@@ -258,7 +258,7 @@ public class FNode {
 		_isMatrixDirty = true;
 		UpdateMatrix();
 		//using "this" so the getter is called (because it checks if the matrix exists and lazy inits it if it doesn't)
-		return this.inverseConcatenatedMatrix.GetNewTransformedVector(globalVector);
+		return this.inverseConcatenatedMatrix.Transform2(globalVector);
 	}
 	
 	public Vector2 LocalToGlobal(Vector2 localVector) {
@@ -266,7 +266,7 @@ public class FNode {
 		_isMatrixDirty = true;
 		UpdateMatrix();
 		//using "this" so the getter is called (because it checks if the matrix exists and lazy inits it if it doesn't)
-		return this.screenConcatenatedMatrix.GetNewTransformedVector(localVector);
+		return this.screenConcatenatedMatrix.Transform2(localVector);
 	}
 	
 	public Vector2 GlobalToLocal(Vector2 globalVector) {
@@ -274,7 +274,7 @@ public class FNode {
 		_isMatrixDirty = true;
 		UpdateMatrix();
 		//using "this" so the getter is called (because it checks if the matrix exists and lazy inits it if it doesn't)
-		return this.screenInverseConcatenatedMatrix.GetNewTransformedVector(globalVector);
+		return this.screenInverseConcatenatedMatrix.Transform2(globalVector);
 	}
 	
 	public Vector2 OtherToLocal(FNode otherNode, Vector2 otherVector) { //takes a point in another node and converts it to a point in this node
@@ -298,24 +298,16 @@ public class FNode {
 		
 		//do NOT set _isMatrixDirty to false here because it is used in the redraw loop and will be set false then
 
-		_matrix.SetScaleThenRotate(_x, _y, _scaleX * _visibleScale, _scaleY * _visibleScale, _rotation * -0.01745329f); //0.01745329 is RXMath.DTOR
+		_matrix.FromScalingRotationTranslation(_x, _y, _scaleX * _visibleScale, _scaleY * _visibleScale, _rotation * -0.01745329f); //0.01745329 is RXMath.DTOR
 			
-		if (_container != null) {
-			_concatenatedMatrix.ConcatAndCopyValues(_matrix, _container.concatenatedMatrix);
-		} else {
-			_concatenatedMatrix.CopyValues(_matrix);	
-		}
+		if (_container != null) _concatenatedMatrix.FromMultiply(_matrix, _container.concatenatedMatrix);
+		else _concatenatedMatrix.Copy(_matrix);	
 		
 		if (_needsSpecialMatrices) {
-			_inverseConcatenatedMatrix.InvertAndCopyValues(_concatenatedMatrix);
-
-			if (_isOnStage) {
-				_screenConcatenatedMatrix.ConcatAndCopyValues(_concatenatedMatrix, _stage.screenConcatenatedMatrix);
-			} else {
-				_screenConcatenatedMatrix.CopyValues(_concatenatedMatrix); //if it's not on the stage, just use its normal matrix
-			}
-
-			_screenInverseConcatenatedMatrix.InvertAndCopyValues(_screenConcatenatedMatrix);
+			_inverseConcatenatedMatrix.FromInvert(_concatenatedMatrix);
+			if (_isOnStage) _screenConcatenatedMatrix.FromMultiply(_concatenatedMatrix, _stage.screenConcatenatedMatrix);
+			else _screenConcatenatedMatrix.Copy(_concatenatedMatrix); //if it's not on the stage, just use its normal matrix
+			_screenInverseConcatenatedMatrix.FromInvert(_screenConcatenatedMatrix);
 		}
 	}
 	
@@ -327,29 +319,23 @@ public class FNode {
 		if (_isMatrixDirty || shouldForceDirty) {
 			_isMatrixDirty = false;
 			
-			_matrix.SetScaleThenRotate(_x, _y, _scaleX * _visibleScale, _scaleY * _visibleScale, _rotation * -0.01745329f); //0.01745329 is RXMath.DTOR
+			_matrix.FromScalingRotationTranslation(_x, _y, _scaleX * _visibleScale, _scaleY * _visibleScale, _rotation * -0.01745329f); //0.01745329 is RXMath.DTOR
 			
-			if (_container != null) {
-				_concatenatedMatrix.ConcatAndCopyValues(_matrix, _container.concatenatedMatrix);
-			} else {
-				_concatenatedMatrix.CopyValues(_matrix);	
+			if (_container != null) _concatenatedMatrix.FromMultiply(_matrix, _container.concatenatedMatrix);
+			else _concatenatedMatrix.Copy(_matrix);	
+
+			if (_needsSpecialMatrices) {
+				_inverseConcatenatedMatrix.FromInvert(_concatenatedMatrix);
+				_screenConcatenatedMatrix.FromMultiply(_concatenatedMatrix, _stage.screenConcatenatedMatrix);
+				_screenInverseConcatenatedMatrix.FromInvert(_screenConcatenatedMatrix);
 			}
-		}
-		
-		if (_needsSpecialMatrices) {
-			_inverseConcatenatedMatrix.InvertAndCopyValues(_concatenatedMatrix);
-			_screenConcatenatedMatrix.ConcatAndCopyValues(_concatenatedMatrix, _stage.screenConcatenatedMatrix);
-			_screenInverseConcatenatedMatrix.InvertAndCopyValues(_screenConcatenatedMatrix);
 		}
 		
 		if (_isAlphaDirty || shouldForceDirty) {
 			_isAlphaDirty = false;
 			
-			if (_container != null) {
-				_concatenatedAlpha = _container.concatenatedAlpha * _alpha;
-			} else {
-				_concatenatedAlpha = _alpha;
-			}
+			if (_container != null) _concatenatedAlpha = _container.concatenatedAlpha * _alpha;
+			else _concatenatedAlpha = _alpha;
 		}	
 	}
 	
@@ -513,9 +499,9 @@ public class FNode {
 		_screenInverseConcatenatedMatrix = new FMatrix();
 
 		if (_isOnStage) {
-			_inverseConcatenatedMatrix.InvertAndCopyValues(_concatenatedMatrix);
-			_screenConcatenatedMatrix.ConcatAndCopyValues(_concatenatedMatrix, _stage.screenConcatenatedMatrix);
-			_screenInverseConcatenatedMatrix.InvertAndCopyValues(_screenConcatenatedMatrix);
+			_inverseConcatenatedMatrix.FromInvert(_concatenatedMatrix);
+			_screenConcatenatedMatrix.FromMultiply(_concatenatedMatrix, _stage.screenConcatenatedMatrix);
+			_screenInverseConcatenatedMatrix.FromInvert(_screenConcatenatedMatrix);
 		} else {
 			Debug.LogWarning("Futile: Warning! You're probably trying to use GlobalToLocal/LocalToLocal with an object that isn't currently part of the display list");
 		}
@@ -587,15 +573,15 @@ public class FNode {
 	public void RotateAroundPointRelative(Vector2 localPoint, float relativeDegrees) {
 		FMatrix tempMatrix = FMatrix.tempMatrix;
 		
-		tempMatrix.ResetToIdentity();
-		tempMatrix.SetScaleThenRotate(0, 0, _scaleX, _scaleY, _rotation * -RXMath.DTOR);
-		Vector2 firstVector = tempMatrix.GetNewTransformedVector(new Vector2(-localPoint.x, -localPoint.y));
+		tempMatrix.Identity();
+		tempMatrix.FromScalingRotationTranslation(0, 0, _scaleX, _scaleY, _rotation * -RXMath.DTOR);
+		Vector2 firstVector = tempMatrix.Transform2(new Vector2(-localPoint.x, -localPoint.y));
 		
 		_rotation += relativeDegrees;
 		
-		tempMatrix.ResetToIdentity();
-		tempMatrix.SetScaleThenRotate(0, 0, _scaleX, _scaleY, _rotation * -RXMath.DTOR);
-		Vector2 secondVector = tempMatrix.GetNewTransformedVector(new Vector2(-localPoint.x, -localPoint.y));
+		tempMatrix.Identity();
+		tempMatrix.FromScalingRotationTranslation(0, 0, _scaleX, _scaleY, _rotation * -RXMath.DTOR);
+		Vector2 secondVector = tempMatrix.Transform2(new Vector2(-localPoint.x, -localPoint.y));
 		
 		_x += secondVector.x - firstVector.x;
 		_y += secondVector.y - firstVector.y;
@@ -612,9 +598,9 @@ public class FNode {
 	public void ScaleAroundPointRelative(Vector2 localPoint, float relativeScaleX, float relativeScaleY) {
 		FMatrix tempMatrix = FMatrix.tempMatrix;
 		
-		tempMatrix.ResetToIdentity();
-		tempMatrix.SetScaleThenRotate(0, 0, (relativeScaleX - 1.0f), (relativeScaleY - 1.0f), _rotation * -RXMath.DTOR);
-		Vector2 moveVector = tempMatrix.GetNewTransformedVector(new Vector2(localPoint.x * _scaleX, localPoint.y * _scaleY));	
+		tempMatrix.Identity();
+		tempMatrix.FromScalingRotationTranslation(0, 0, (relativeScaleX - 1.0f), (relativeScaleY - 1.0f), _rotation * -RXMath.DTOR);
+		Vector2 moveVector = tempMatrix.Transform2(new Vector2(localPoint.x * _scaleX, localPoint.y * _scaleY));	
 
 		_x += -moveVector.x;
 		_y += -moveVector.y;

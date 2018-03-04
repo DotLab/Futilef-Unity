@@ -266,25 +266,25 @@ public class FRadialWipeSprite : FSprite
 			uvs[vertexIndex0 + 14] = _uvVertices[5];
 			
 			//set the mesh
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0], _meshVertices[6],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 1], _meshVertices[0],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 2], _meshVertices[1],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0], _meshVertices[6],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 1], _meshVertices[0],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 2], _meshVertices[1],0);
 			
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 3], _meshVertices[6],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 4], _meshVertices[1],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 5], _meshVertices[2],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 3], _meshVertices[6],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 4], _meshVertices[1],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 5], _meshVertices[2],0);
 			
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 6], _meshVertices[6],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 7], _meshVertices[2],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 8], _meshVertices[3],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 6], _meshVertices[6],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 7], _meshVertices[2],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 8], _meshVertices[3],0);
 			
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 9], _meshVertices[6],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 10], _meshVertices[3],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 11], _meshVertices[4],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 9], _meshVertices[6],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 10], _meshVertices[3],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 11], _meshVertices[4],0);
 			
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 12], _meshVertices[6],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 13], _meshVertices[4],0);
-			_concatenatedMatrix.ApplyVector3FromLocalVector2(ref vertices[vertexIndex0 + 14], _meshVertices[5],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 12], _meshVertices[6],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 13], _meshVertices[4],0);
+			_concatenatedMatrix.FromTransform3(ref vertices[vertexIndex0 + 14], _meshVertices[5],0);
 			
 			_renderLayer.HandleVertsChange();
 		}
