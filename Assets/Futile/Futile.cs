@@ -342,7 +342,8 @@ public class Futile : MonoBehaviour {
 	}
 	
 	public void UpdateCameraPosition(Camera cam) {
-		cam.orthographicSize = screen.pixelHeight / 2 * displayScaleInverse;
+//		cam.orthographicSize = screen.pixelHeight / 2 * displayScaleInverse;
+		cam.orthographicSize = screen.height / 2;
 		
 		float camXOffset = ((screen.originX - 0.5f) * -screen.pixelWidth) * displayScaleInverse + screenPixelOffset;
 		float camYOffset = ((screen.originY - 0.5f) * -screen.pixelHeight) * displayScaleInverse - screenPixelOffset;
