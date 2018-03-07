@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class FNode {
+public abstract class FNode {
 	protected float _x = 0f;
 	protected float _y = 0f;
 	protected float _scaleX = 1f;
