@@ -52,7 +52,7 @@
 	"trimmed": true,
 	"spriteSourceSize": {"x":11,"y":2,"w":732,"h":1176},
 	"sourceSize": {"w":753,"h":1180},
-	"pivot": {"x":0.5,"y":0.5}
+	"pivot": {"x":0.541833,"y":0.431356}
 },
 "こいし（余裕）.png":
 {
@@ -79,6 +79,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1582,"h":1952},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:2c6006a1e385a2f925624121f1797c77:e6893c1034f2a9be080bb897589aad6c:daf4d9451e1d5f71395fe18d0467c463$"
+	"smartupdate": "$TexturePacker:SmartUpdate:3a56baa5ef0e6012b4d1dd221b129b0d:e6893c1034f2a9be080bb897589aad6c:daf4d9451e1d5f71395fe18d0467c463$"
 }
 }
