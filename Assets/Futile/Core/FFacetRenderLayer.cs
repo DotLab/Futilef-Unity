@@ -221,7 +221,7 @@ public class FFacetRenderLayer : FRenderableLayerInterface {
 				_didVertsChange = false;
 				_mesh.vertices = _vertices;
 			}
-		
+			
 			if (_didColorsChange) {
 				_didColorsChange = false;
 				_mesh.colors = _colors;
@@ -231,8 +231,7 @@ public class FFacetRenderLayer : FRenderableLayerInterface {
 				_didUVsChange = false;
 				_mesh.uv = _uvs;
 			}
-		} 
-
+		}
 	}
 
 	public void HandleVertsChange() {
@@ -365,7 +364,7 @@ public class FTriangleRenderLayer : FFacetRenderLayer {
 		if (deltaDecrease <= 0) return;
 		
 		_maxFacetCount = Math.Max(facetType.initialAmount, _maxFacetCount - deltaDecrease);
-	
+		
 		//shrink the arrays
 		Array.Resize(ref _vertices, _maxFacetCount * 3);
 		Array.Resize(ref _uvs, _maxFacetCount * 3);
@@ -397,7 +396,7 @@ public class FTriangleRenderLayer : FFacetRenderLayer {
 		for (int i = firstNewFacetIndex; i < _maxFacetCount; ++i) {
 			int threei = i * 3;
 			
-			_triangles[threei] = threei;	
+			_triangles[threei] = threei;
 			_triangles[threei + 1] = threei + 1;
 			_triangles[threei + 2] = threei + 2;
 		}
