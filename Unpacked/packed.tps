@@ -199,6 +199,10 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">Consolas_0.png</key>
+            <key type="filename">Consolas_1.png</key>
+            <key type="filename">Consolas_2.png</key>
+            <key type="filename">Consolas_3.png</key>
             <key type="filename">Zpix_0.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -213,11 +217,9 @@
                 <false/>
             </struct>
             <key type="filename">こいし（不満）.png</key>
-            <key type="filename">こいし（余裕影）.png</key>
-            <key type="filename">こいし（困る）.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0.541833,0.431356</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -240,14 +242,30 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">こいし（困る）.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>188,295,377,590</rect>
+                <key>scale9Paddings</key>
+                <rect>188,295,377,590</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
         </map>
         <key>fileList</key>
         <array>
             <filename>Zpix_0.png</filename>
             <filename>こいし（不満）.png</filename>
             <filename>こいし（余裕）.png</filename>
-            <filename>こいし（余裕影）.png</filename>
             <filename>こいし（困る）.png</filename>
+            <filename>Consolas_0.png</filename>
+            <filename>Consolas_1.png</filename>
+            <filename>Consolas_2.png</filename>
+            <filename>Consolas_3.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
