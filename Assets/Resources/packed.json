@@ -2,16 +2,16 @@
 
 "Consolas_0.png":
 {
-	"frame": {"x":1179,"y":1179,"w":256,"h":256},
+	"frame": {"x":1,"y":1179,"w":509,"h":196},
 	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":256},
-	"sourceSize": {"w":256,"h":256},
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":509,"h":196},
+	"sourceSize": {"w":512,"h":512},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "Consolas_1.png":
 {
-	"frame": {"x":1179,"y":1437,"w":256,"h":256},
+	"frame": {"x":1,"y":1377,"w":256,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":256},
@@ -20,7 +20,7 @@
 },
 "Consolas_2.png":
 {
-	"frame": {"x":1179,"y":1695,"w":256,"h":256},
+	"frame": {"x":259,"y":1377,"w":256,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":256},
@@ -29,7 +29,7 @@
 },
 "Consolas_3.png":
 {
-	"frame": {"x":1437,"y":1179,"w":256,"h":144},
+	"frame": {"x":517,"y":1179,"w":256,"h":144},
 	"rotated": true,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":144},
@@ -38,7 +38,7 @@
 },
 "Zpix_0.png":
 {
-	"frame": {"x":1437,"y":1437,"w":256,"h":61},
+	"frame": {"x":663,"y":1179,"w":256,"h":61},
 	"rotated": true,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":61},
@@ -56,7 +56,7 @@
 },
 "こいし（余裕）.png":
 {
-	"frame": {"x":1,"y":1179,"w":732,"h":1176},
+	"frame": {"x":735,"y":1,"w":732,"h":1176},
 	"rotated": true,
 	"trimmed": true,
 	"spriteSourceSize": {"x":11,"y":2,"w":732,"h":1176},
@@ -65,8 +65,8 @@
 },
 "こいし（困る）.png":
 {
-	"frame": {"x":735,"y":1,"w":732,"h":1176},
-	"rotated": false,
+	"frame": {"x":735,"y":735,"w":732,"h":1176},
+	"rotated": true,
 	"trimmed": true,
 	"spriteSourceSize": {"x":11,"y":2,"w":732,"h":1176},
 	"sourceSize": {"w":753,"h":1180},
@@ -77,8 +77,8 @@
 	"version": "1.0",
 	"image": "packed.png.bytes",
 	"format": "RGBA8888",
-	"size": {"w":1582,"h":1952},
+	"size": {"w":1912,"h":1634},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:3440274e0c599a64551930ba1991ee86:e6893c1034f2a9be080bb897589aad6c:daf4d9451e1d5f71395fe18d0467c463$"
+	"smartupdate": "$TexturePacker:SmartUpdate:b8747441ac4932bdbc2794ff4b538e1d:aed81e16eacaeab634cfd1eb7130acd1:daf4d9451e1d5f71395fe18d0467c463$"
 }
 }
