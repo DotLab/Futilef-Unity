@@ -1,84 +1,257 @@
-{"frames": {
-
-"Consolas_0.png":
 {
-	"frame": {"x":1,"y":1179,"w":509,"h":196},
-	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":0,"w":509,"h":196},
-	"sourceSize": {"w":512,"h":512},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"Consolas_1.png":
-{
-	"frame": {"x":1,"y":1377,"w":256,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":256},
-	"sourceSize": {"w":256,"h":256},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"Consolas_2.png":
-{
-	"frame": {"x":259,"y":1377,"w":256,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":256},
-	"sourceSize": {"w":256,"h":256},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"Consolas_3.png":
-{
-	"frame": {"x":517,"y":1179,"w":256,"h":144},
-	"rotated": true,
-	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":144},
-	"sourceSize": {"w":256,"h":256},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"Zpix_0.png":
-{
-	"frame": {"x":663,"y":1179,"w":256,"h":61},
-	"rotated": true,
-	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":61},
-	"sourceSize": {"w":256,"h":256},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"こいし（不満）.png":
-{
-	"frame": {"x":1,"y":1,"w":732,"h":1176},
-	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":11,"y":2,"w":732,"h":1176},
-	"sourceSize": {"w":753,"h":1180},
-	"pivot": {"x":0.266932,"y":0.905932}
-},
-"こいし（余裕）.png":
-{
-	"frame": {"x":735,"y":1,"w":732,"h":1176},
-	"rotated": true,
-	"trimmed": true,
-	"spriteSourceSize": {"x":11,"y":2,"w":732,"h":1176},
-	"sourceSize": {"w":753,"h":1180},
-	"pivot": {"x":0.540505,"y":0.429661}
-},
-"こいし（困る）.png":
-{
-	"frame": {"x":735,"y":735,"w":732,"h":1176},
-	"rotated": true,
-	"trimmed": true,
-	"spriteSourceSize": {"x":11,"y":2,"w":732,"h":1176},
-	"sourceSize": {"w":753,"h":1180},
-	"pivot": {"x":0.5,"y":0.5}
-}},
-"meta": {
-	"app": "http://www.codeandweb.com/texturepacker",
-	"version": "1.0",
-	"image": "packed.png.bytes",
-	"format": "RGBA8888",
-	"size": {"w":1912,"h":1634},
-	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:b8747441ac4932bdbc2794ff4b538e1d:aed81e16eacaeab634cfd1eb7130acd1:daf4d9451e1d5f71395fe18d0467c463$"
-}
+    "name": "packed.png",
+    "size": {
+        "x": 1909,
+        "y": 1630
+    },
+    "frames": [
+        {
+            "name": "こいし（不満）.png",
+            "size": {
+                "x": 753,
+                "y": 1180
+            },
+            "pivot": {
+                "x": 201,
+                "y": 111
+            },
+            "quad": {
+                "x": 11,
+                "y": 2,
+                "w": 732,
+                "h": 1176
+            },
+            "rotated": false,
+            "uv": {
+                "x": 0,
+                "y": 0,
+                "w": 732,
+                "h": 1176
+            },
+            "sliced": false,
+            "border": {
+                "x": 188,
+                "y": 295,
+                "w": 377,
+                "h": 590
+            }
+        },
+        {
+            "name": "こいし（余裕）.png",
+            "size": {
+                "x": 753,
+                "y": 1180
+            },
+            "pivot": {
+                "x": 408,
+                "y": 673
+            },
+            "quad": {
+                "x": 11,
+                "y": 2,
+                "w": 732,
+                "h": 1176
+            },
+            "rotated": true,
+            "uv": {
+                "x": 733,
+                "y": 0,
+                "w": 1176,
+                "h": 732
+            },
+            "sliced": false,
+            "border": {
+                "x": 188,
+                "y": 295,
+                "w": 377,
+                "h": 590
+            }
+        },
+        {
+            "name": "こいし（困る）.png",
+            "size": {
+                "x": 753,
+                "y": 1180
+            },
+            "pivot": {
+                "x": 377,
+                "y": 590
+            },
+            "quad": {
+                "x": 11,
+                "y": 2,
+                "w": 732,
+                "h": 1176
+            },
+            "rotated": true,
+            "uv": {
+                "x": 733,
+                "y": 733,
+                "w": 1176,
+                "h": 732
+            },
+            "sliced": false,
+            "border": {
+                "x": 188,
+                "y": 295,
+                "w": 377,
+                "h": 590
+            }
+        },
+        {
+            "name": "Consolas_0.png",
+            "size": {
+                "x": 512,
+                "y": 512
+            },
+            "pivot": {
+                "x": 255,
+                "y": 414
+            },
+            "quad": {
+                "x": 0,
+                "y": 0,
+                "w": 509,
+                "h": 196
+            },
+            "rotated": false,
+            "uv": {
+                "x": 0,
+                "y": 1177,
+                "w": 509,
+                "h": 196
+            },
+            "sliced": false,
+            "border": {
+                "x": 64,
+                "y": 64,
+                "w": 128,
+                "h": 128
+            }
+        },
+        {
+            "name": "Consolas_1.png",
+            "size": {
+                "x": 256,
+                "y": 256
+            },
+            "pivot": {
+                "x": 128,
+                "y": 128
+            },
+            "quad": {
+                "x": 0,
+                "y": 0,
+                "w": 256,
+                "h": 256
+            },
+            "rotated": false,
+            "uv": {
+                "x": 0,
+                "y": 1374,
+                "w": 256,
+                "h": 256
+            },
+            "sliced": false,
+            "border": {
+                "x": 64,
+                "y": 64,
+                "w": 128,
+                "h": 128
+            }
+        },
+        {
+            "name": "Consolas_2.png",
+            "size": {
+                "x": 256,
+                "y": 256
+            },
+            "pivot": {
+                "x": 128,
+                "y": 128
+            },
+            "quad": {
+                "x": 0,
+                "y": 0,
+                "w": 256,
+                "h": 256
+            },
+            "rotated": false,
+            "uv": {
+                "x": 257,
+                "y": 1374,
+                "w": 256,
+                "h": 256
+            },
+            "sliced": false,
+            "border": {
+                "x": 64,
+                "y": 64,
+                "w": 128,
+                "h": 128
+            }
+        },
+        {
+            "name": "Consolas_3.png",
+            "size": {
+                "x": 256,
+                "y": 256
+            },
+            "pivot": {
+                "x": 128,
+                "y": 184
+            },
+            "quad": {
+                "x": 0,
+                "y": 0,
+                "w": 256,
+                "h": 144
+            },
+            "rotated": true,
+            "uv": {
+                "x": 514,
+                "y": 1177,
+                "w": 144,
+                "h": 256
+            },
+            "sliced": false,
+            "border": {
+                "x": 64,
+                "y": 64,
+                "w": 128,
+                "h": 128
+            }
+        },
+        {
+            "name": "Zpix_0.png",
+            "size": {
+                "x": 256,
+                "y": 256
+            },
+            "pivot": {
+                "x": 128,
+                "y": 226
+            },
+            "quad": {
+                "x": 0,
+                "y": 0,
+                "w": 256,
+                "h": 61
+            },
+            "rotated": true,
+            "uv": {
+                "x": 659,
+                "y": 1177,
+                "w": 61,
+                "h": 256
+            },
+            "sliced": false,
+            "border": {
+                "x": 64,
+                "y": 64,
+                "w": 128,
+                "h": 128
+            }
+        }
+    ]
 }

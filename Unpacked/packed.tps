@@ -219,7 +219,7 @@
             <key type="filename">こいし（不満）.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.541833,0.431356</point_f>
+                <point_f>0.266932,0.905932</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
