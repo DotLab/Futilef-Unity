@@ -4,8 +4,12 @@ using UnityEngine;
 
 using Futilef;
 
-public static class Res {
-	static Dictionary<int, Texture2D> textureDict = new Dictionary<int, Texture2D>();
+public static unsafe class Res {
+	static readonly Dictionary<int, Texture2D> textureDict = new Dictionary<int, Texture2D>();
+
+	static readonly Lstp *atlasMetaLst = Lstp.New();
+	static readonly Lstp *spriteMetaLst = Lstp.New();
+	static readonly Dictionary<int, int> spriteMetaLstIdxDict = new Dictionary<int, int>();
 
 	public static Texture2D GetTexture(int id) {
 		if (textureDict.ContainsKey(id)) return textureDict[id];
@@ -15,6 +19,27 @@ public static class Res {
 		texture.LoadImage(Resources.Load<TextAsset>(id + "i").bytes);
 		textureDict.Add(id, texture);
 		return texture;
+	}
+
+	public static void LoadAtlases(params int[] ids) {
+		for (int i = 0, len = ids.Length; i < len; i += 1) {
+			int id = ids[i];
+			var atlasMeta = TpAtlasMeta.New(Resources.Load<TextAsset>(id.ToString()).text);
+			Lstp.Push(atlasMetaLst, atlasMeta);
+			for (int j = 0, jlen = atlasMeta->spriteCount; j < jlen; j += 1) {
+				var spriteMeta = atlasMeta->sprites + j;
+				spriteMetaLstIdxDict.Add(spriteMeta->name, spriteMetaLst->count);
+				Lstp.Push(spriteMetaLst, spriteMeta);
+			}
+		}	
+	}
+
+	public static TpSpriteMeta *GetSpriteMeta(int id) {
+		return (TpSpriteMeta *)spriteMetaLst->ptr[spriteMetaLstIdxDict[id]];
+	}
+
+	public static bool HasSpriteMeta(int id) {
+		return spriteMetaLstIdxDict.ContainsKey(id);
 	}
 }
 
@@ -44,7 +69,7 @@ public class DrawBatch {
 	public DrawBatch(Shader shader, Texture2D texture) {
 		this.shader = shader; this.texture = texture;
 
-		gameObject = new GameObject(string.Format("Batch [{0}] [{1}]", shader.name, texture.name));
+		gameObject = new GameObject(string.Format("Batch[{0}|{1}x{2}]", shader.name, texture.width, texture.height));
 
 		meshFilter = gameObject.AddComponent<MeshFilter>();
 		mesh = meshFilter.mesh;
@@ -108,6 +133,13 @@ public class DrawBatch {
 
 	public void Deactivate() {
 		gameObject.SetActive(false);
+	}
+
+	public void Dispose() {
+		Debug.Log("Dispose " + gameObject.name);
+		Object.Destroy(material);
+		Object.Destroy(mesh);
+		Object.Destroy(gameObject);
 	}
 }
 
@@ -186,6 +218,12 @@ public class DrawContext {
 		activeBatches.AddLast(curBatch);
 		return curBatch;
 	}
+
+	public void Dispose() {
+		foreach (var batch in activeBatches) batch.Dispose();
+		foreach (var batch in prevBatches) batch.Dispose();
+		foreach (var batch in inactiveBatches) batch.Dispose();
+	}
 }
 
 public unsafe class GamePresentationController : MonoBehaviour {
@@ -202,7 +240,6 @@ public unsafe class GamePresentationController : MonoBehaviour {
 	class SetCamAttrCmd : Cmd { public int camAttrId; public object[] args; }
 	class SetCamAttrEasedCmd : SetCamAttrCmd { public float duration; public int esType; }
 
-	readonly Dictionary<int, ImgMeta> imgDict = new Dictionary<int, ImgMeta>();
 	readonly Queue<Cmd> cmdQueue = new Queue<Cmd>();
 
 	float waitEndTime = -1, lastEsEndTime;
@@ -239,15 +276,10 @@ public unsafe class GamePresentationController : MonoBehaviour {
 				break;
 			case "AddImgCmd":
 				var addImgCmd = cmd as AddImgCmd;
-				var imgMeta = imgDict[addImgCmd.imgId];
-				
+
 				break;
 			}
 		}
-	}
-
-	public void LoadImg(int imgId, Texture2D texture, TpSpriteMeta *spriteMeta) {
-		imgDict.Add(imgId, new ImgMeta{ texture = texture, spriteMeta = spriteMeta });
 	}
 
 	public void Wait(int time = -1) {
@@ -255,7 +287,7 @@ public unsafe class GamePresentationController : MonoBehaviour {
 	}
 
 	public void AddImg(int id, int imgId) {
-		if (imgDict.ContainsKey(imgId)) {
+		if (Res.HasSpriteMeta(imgId)) {
 			cmdQueue.Enqueue(new AddImgCmd{ id = id, imgId = imgId });
 		}
 	}
@@ -281,11 +313,6 @@ public unsafe class GamePresentationController : MonoBehaviour {
 	}
 }
 
-public unsafe class ImgMeta {
-	public Texture2D texture;
-	public TpSpriteMeta *spriteMeta;
-}
-
 public unsafe struct ImgObj {
 	public int type;
 
@@ -304,13 +331,21 @@ public unsafe struct ImgObj {
 
 	TpSpriteMeta *spriteMeta;
 
-	public static void Init(ImgObj *self, TpSpriteMeta *spriteMeta) {
-		self->type = 1;
+	public static ImgObj *New(TpSpriteMeta *spriteMeta) {
+		return Init((ImgObj *)Mem.Alloc(sizeof(ImgObj)), spriteMeta);
+	}
 
+	public static ImgObj *Init(ImgObj *self, TpSpriteMeta *spriteMeta) {
+		self->type = 1;
+		self->interactable = false;
 		self->shouldRebuild = true;
+
+		Vec2.Zero(self->pos);
 		Vec2.Set(self->scl, 1, 1);
 		Vec4.Set(self->color, 1, 1, 1, 1);
 		self->spriteMeta = spriteMeta;
+
+		return self;
 	}
 
 	public static void SetInteractable(ImgObj *self, bool val) {
@@ -387,10 +422,6 @@ public unsafe struct ImgObj {
 		bVerts[vertIdx + 1].Set(verts[2], verts[3], 0);
 		bVerts[vertIdx + 2].Set(verts[4], verts[5], 0);
 		bVerts[vertIdx + 3].Set(verts[6], verts[7], 0);
-		Debug.Log(Vec2.Str(uvs));
-		Debug.Log(Vec2.Str(uvs+2));
-		Debug.Log(Vec2.Str(uvs+4));
-		Debug.Log(Vec2.Str(uvs+6));
 
 		bUvs[vertIdx    ].Set(uvs[0], uvs[1]);
 		bUvs[vertIdx + 1].Set(uvs[2], uvs[3]);

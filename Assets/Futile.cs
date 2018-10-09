@@ -2,22 +2,29 @@
 using Futilef;
 
 public unsafe class Futile : MonoBehaviour {
-	public TpAtlasMeta* atlas;
+	DrawContext ctx;
+	ImgObj *img;
 
 	void OnEnable() {
-		atlas = TpAtlasMeta.Create(Resources.Load<TextAsset>("10").text);
-		Debug.LogFormat("{0} {1}", atlas->sprites[0].pivot[0], atlas->sprites[0].pivot[1]);
+		Res.LoadAtlases(10);
+		img = ImgObj.New(Res.GetSpriteMeta(10001));
+		ctx = new DrawContext();
+	}
 
-		var img = stackalloc ImgObj[1];
-		ImgObj.Init(img, atlas->sprites + 5);
-		var ctx = new DrawContext();
+	void Update() {
+		var vec2 = stackalloc float[2];
+		ImgObj.SetPosition(img, Vec2.Set(vec2, Mathf.Sin(Time.time) * 100, 0));
+		ImgObj.SetRotation(img, Mathf.Cos(Time.time));
+
 		ctx.Start();
 		ImgObj.Draw(img, ctx);
-		ctx.Finish();
+		ctx.Finish();		
 	}
 	 
 	void OnDisable() {
-		Debug.Log("Clean up");
-		TpAtlasMeta.Free(atlas);
+		Mem.Free(img);
+		ctx.Dispose();
+
+		Debug.Log("Clean up ");
 	}
 }
