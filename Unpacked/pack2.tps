@@ -36,7 +36,7 @@
         <key>dataFormat</key>
         <string>futilef</string>
         <key>textureFileName</key>
-        <filename>1{n}i.bytes.png</filename>
+        <filename>../Assets/Resources/1{n}i.bytes</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -86,7 +86,7 @@
         <key>textureFormat</key>
         <enum type="SettingsBase::TextureFormat">png</enum>
         <key>borderPadding</key>
-        <uint>0</uint>
+        <uint>1</uint>
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
@@ -158,7 +158,7 @@
         <key>forceIdenticalLayout</key>
         <false/>
         <key>outputFormat</key>
-        <enum type="SettingsBase::OutputFormat">RGBA4444</enum>
+        <enum type="SettingsBase::OutputFormat">RGBA8888</enum>
         <key>alphaHandling</key>
         <enum type="SettingsBase::AlphaHandling">ClearTransparentPixels</enum>
         <key>contentProtection</key>
@@ -271,6 +271,7 @@
         <filename></filename>
         <key>exporterProperties</key>
         <map type="ExporterProperties">
+            <key>futilef::base64</key>
             <key>futilef::prettyPrint</key>
             <struct type="ExporterProperty">
                 <key>value</key>

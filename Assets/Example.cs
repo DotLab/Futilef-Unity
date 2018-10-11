@@ -7,6 +7,8 @@ public class Example : MonoBehaviour {
 	GpController gpc;
 
 	void OnEnable() {
+		Res.LoadAtlases(10);
+
 		gpc = new GpController();
 		gpc.Init();
 
@@ -31,9 +33,18 @@ public class Example : MonoBehaviour {
 		gpc.SetImgAttrEased(1, ImgAttr.Alpha, 4f, EsType.CubicOut, 0f);
 		gpc.Wait();
 		gpc.RmImg(1);
+
+		Input.simulateMouseWithTouches = true;
+		Debug.Log(Screen.currentResolution);
 	}
 
 	void Update() {
+		Debug.LogFormat("{0} at {1} ({2})", "mouse", Input.mousePosition, Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0)));
+
+		foreach (var t in Input.touches) {
+			Debug.LogFormat("{0} at {1} ({2})", t.fingerId, t.position, t.rawPosition);
+		}
+
 		gpc.Update(Time.deltaTime);
 	}
 	 
