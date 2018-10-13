@@ -7,14 +7,6 @@ public class Example : MonoBehaviour {
 	GpController gpc;
 
 	void OnEnable() {
-		#if DEBUG
-		System.Reflection.Assembly.GetAssembly(typeof(UnityEditor.SceneView)).GetType("UnityEditor.LogEntries").GetMethod("Clear").Invoke(new object(), null);
-
-		Algo.Test();
-		Lst.Test();
-		PtrLst.Test();
-		#endif
-
 		Res.LoadAtlases(10);
 
 		gpc = new GpController();
