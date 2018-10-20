@@ -3,7 +3,7 @@ using Futilef;
 
 using ImgAttr = Futilef.GpController.ImgAttr;
 
-public class Example : MonoBehaviour {
+public unsafe class Example : MonoBehaviour {
 	const int frameCounterSize = 500;
 	int frameCounter;
 	float lastCounterTime;
@@ -48,6 +48,79 @@ public class Example : MonoBehaviour {
 //		Application.targetFrameRate = 60;
 		lastCounterTime = Time.time;
 		frameCounter = 0;
+
+		var sw = new System.Diagnostics.Stopwatch();
+		var refDict = new System.Collections.Generic.Dictionary<uint, uint>();
+		sw.Stop();
+		sw.Reset();
+		sw.Start();
+		for (uint i = 2; i < 1000000; i += 1) {
+			refDict.Add(i, i);
+		}
+		sw.Stop();
+		UnityEngine.Debug.LogFormat("refDict Test: {0:N0}", sw.ElapsedTicks);
+
+		var dict = stackalloc Dict[1]; Dict.Init(dict);
+		sw.Reset();
+		sw.Start();
+		for (uint i = 2; i < 1000000; i += 1) {
+			Dict.Set(dict, i, (void *)i, (void *)i, eq);
+		}
+		sw.Stop();
+		UnityEngine.Debug.LogFormat("dict Test: {0:N0}", sw.ElapsedTicks);
+
+		sw.Reset();
+		sw.Start();
+		for (uint i = 2; i < 1000000; i += 1) {
+			refDict.Remove(i);
+		}
+		sw.Stop();
+		UnityEngine.Debug.LogFormat("refDict Test: {0:N0}", sw.ElapsedTicks);
+
+		sw.Reset();
+		sw.Start();
+		for (uint i = 2; i < 1000000; i += 1) {
+			Dict.Remove(dict, i, (void *)i, eq);
+		}
+		sw.Stop();
+		UnityEngine.Debug.LogFormat("dict Test: {0:N0}", sw.ElapsedTicks);
+
+		sw.Reset();
+		sw.Start();
+		for (uint i = 2; i < 1000000; i += 1) {
+			refDict.Add(i, i);
+		}
+		sw.Stop();
+		UnityEngine.Debug.LogFormat("refDict Test: {0:N0}", sw.ElapsedTicks);
+
+		sw.Reset();
+		sw.Start();
+		for (uint i = 2; i < 1000000; i += 1) {
+			Dict.Set(dict, i, (void *)i, (void *)i, eq);
+		}
+		sw.Stop();
+		UnityEngine.Debug.LogFormat("dict Test: {0:N0}", sw.ElapsedTicks);
+
+		uint k = 0;
+		sw.Reset();
+		sw.Start();
+		for (uint i = 2; i < 1000000; i += 1) {
+			k += refDict[i];
+		}
+		sw.Stop();
+		UnityEngine.Debug.LogFormat("refDict Test: {0:N0}", sw.ElapsedTicks);
+
+		k = 0;
+		sw.Reset();
+		sw.Start();
+		for (uint i = 2; i < 1000000; i += 1) {
+			k += (uint)Dict.Get(dict, i, (void *)i, eq);
+		}
+		sw.Stop();
+		UnityEngine.Debug.LogFormat("dict Test: {0:N0}", sw.ElapsedTicks);
+	}
+	static unsafe bool eq(void *a, void *b) {
+		return (uint)a == (uint)b;
 	}
 
 	void Update() {
