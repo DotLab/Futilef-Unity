@@ -177,7 +177,7 @@
         <key>globalSpriteSettings</key>
         <struct type="SpriteSettings">
             <key>scale</key>
-            <double>0.5</double>
+            <double>1</double>
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
@@ -212,8 +212,33 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">C:/Users/Kailang/Desktop/1/images/1_01.jpg</key>
-            <key type="filename">C:/Users/Kailang/Desktop/1/images/1_02.jpg</key>
+            <key type="filename">C:/Users/Kailang/Desktop/1/images/1_0.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>64,64,128,128</rect>
+                <key>scale9Paddings</key>
+                <rect>64,64,128,128</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">C:/Users/Kailang/Desktop/1/images/1_01.png</key>
+            <key type="filename">C:/Users/Kailang/Desktop/1/images/1_02.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>255,270,510,540</rect>
+                <key>scale9Paddings</key>
+                <rect>255,270,510,540</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">C:/Users/Kailang/Desktop/1/images/1_03.png</key>
             <key type="filename">C:/Users/Kailang/Desktop/1/images/2_01.png</key>
             <key type="filename">C:/Users/Kailang/Desktop/1/images/2_02.png</key>
@@ -230,7 +255,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">C:/Users/Kailang/Desktop/1/images/1_04.jpg</key>
+            <key type="filename">C:/Users/Kailang/Desktop/1/images/1_04.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>195,270,390,540</rect>
+                <key>scale9Paddings</key>
+                <rect>195,270,390,540</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">C:/Users/Kailang/Desktop/1/images/2_04.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
