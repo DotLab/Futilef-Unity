@@ -63,5 +63,22 @@ public unsafe class PtrLst2Benchmark : Benchmark {
 			PtrLst2.Push(lst, (void *)(t + i));
 		}
 		LogCase("re push");
+
+		StartCase();
+		refList.Sort(0, 10000, new Cmpr());
+		RefCase();
+		StartCase();
+		Algo.MergeSort(lst->arr, 10000, Cmp);
+		LogCase("sort");
+	}
+
+	sealed class Cmpr : System.Collections.Generic.IComparer<long> {
+		public int Compare(long x, long y) {
+			return (int)x - (int)y;
+		}
+	}
+
+	static int Cmp(void *a, void *b){
+		return (int)a - (int)b;
 	}
 }

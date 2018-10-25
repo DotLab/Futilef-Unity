@@ -35,7 +35,7 @@ public unsafe class LstBenchmark : Benchmark {
 			idx[i] = Random.Range(0, 1000000);
 		}
 
-		uint t;
+		uint t = 0;
 		StartCase();
 		for (uint i = 0; i < 1000000; i += 1) {
 			t = refList[idx[i]].i;
@@ -66,13 +66,13 @@ public unsafe class LstBenchmark : Benchmark {
 
 		StartCase();
 		for (uint i = 0; i < 10000; i += 1) {
-			item->i = i;
+			item->i = t + i;
 			refList.Add(*item);
 		}
 		RefCase();
 		StartCase();
 		for (uint i = 0; i < 10000; i += 1) {
-			item->i = i;
+			item->i = t + i;
 			Lst.Push(lst);
 			((Item *)lst->arr)[lst->count - 1] = *item;
 //			Lst.Push(lst, (byte *)item);

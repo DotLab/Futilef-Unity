@@ -7,8 +7,8 @@ public unsafe class PtrLstBenchmark : Benchmark {
 	}
 
 	protected override void RunTests() {
-		var refList = new System.Collections.Generic.List<uint>();
-		var lst = stackalloc PtrLst[1]; PtrLst.Init(lst);
+//		var refList = new System.Collections.Generic.List<uint>();
+//		var lst = stackalloc PtrLst[1]; PtrLst.Init(lst);
 
 //		StartCase();
 //		for (uint i = 0; i < 1000000; i += 1) {
