@@ -49,7 +49,7 @@ public unsafe class Example : MonoBehaviour {
 	}
 
 	void Update() {
-		gpc.Update(Time.deltaTime);
+		if (gpc != null) gpc.Update(Time.deltaTime);
 	}
 	 
 	void OnDisable() {
