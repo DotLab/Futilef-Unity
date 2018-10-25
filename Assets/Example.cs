@@ -11,6 +11,8 @@ public unsafe class Example : MonoBehaviour {
 	GpController gpc;
 
 	void OnEnable() {
+		Debug.Log(sizeof(Lst2));
+
 		Res.LoadAtlases(10);
 
 		gpc = new GpController();
@@ -49,7 +51,7 @@ public unsafe class Example : MonoBehaviour {
 	}
 
 	void Update() {
-		gpc.Update(Time.deltaTime);
+		if (gpc != null) gpc.Update(Time.deltaTime);
 	}
 	 
 	void OnDisable() {
