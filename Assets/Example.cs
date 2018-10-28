@@ -11,8 +11,6 @@ public unsafe class Example : MonoBehaviour {
 	GpController gpc;
 
 	void OnEnable() {
-		Debug.Log(sizeof(Lst2));
-
 		Res.LoadAtlases(10);
 
 		gpc = new GpController();
@@ -48,6 +46,10 @@ public unsafe class Example : MonoBehaviour {
 		}
 
 		Application.targetFrameRate = 60;
+
+		#if FDB
+		Fdb.Test();
+		#endif
 	}
 
 	void Update() {

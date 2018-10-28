@@ -7,14 +7,14 @@ public abstract class Benchmark : MonoBehaviour {
 	void OnEnable() {
 		#if !FDB
 		sb = new System.Text.StringBuilder();
-		sb.AppendFormat("{0} test start\n", GetTestName());
+		sb.AppendFormat("{0} benchmark start\n", GetTestName());
 		var sw2 = new System.Diagnostics.Stopwatch(); sw2.Stop(); sw2.Reset(); sw2.Start();
 		sw = new System.Diagnostics.Stopwatch(); sw.Stop(); sw.Reset(); sw.Start();
 		RunTests();
-		sb.AppendFormat("{0} test end {1} ms\n", GetTestName(), sw2.ElapsedMilliseconds);
+		sb.AppendFormat("{0} benchmark end {1} ms\n", GetTestName(), sw2.ElapsedMilliseconds);
 		Debug.Log(sb.ToString());
 		#else
-		Debug.Log(GetTestName() + " test canceled");
+		Debug.Log(GetTestName() + " benchmark canceled");
 		#endif
 	}
 
