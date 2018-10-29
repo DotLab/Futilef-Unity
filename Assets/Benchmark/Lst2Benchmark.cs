@@ -7,7 +7,7 @@ public unsafe class Lst2Benchmark : Benchmark {
 	}
 
 	protected override string GetTestName() {
-		return "lst2";
+		return "Lst2";
 	}
 
 	protected override void RunTests() {

@@ -3,7 +3,7 @@ using Futilef;
 
 public unsafe class PtrLstBenchmark : Benchmark {
 	protected override string GetTestName() {
-		return "ptrlst";
+		return "PtrLst";
 	}
 
 	protected override void RunTests() {

@@ -2,7 +2,7 @@
 
 public unsafe class Pool2Benchmark : Benchmark {
 	protected override string GetTestName() {
-		return "pool2";
+		return "Pool2";
 	}
 
 	protected override void RunTests() {
@@ -25,12 +25,12 @@ public unsafe class Pool2Benchmark : Benchmark {
 		StartCase();
 		for (int i = 0; i < len; i += 1) {
 			ptrs[i] = (byte *)Pool2.Alloc(pool, sizes[i]);
-			if (pool->oldArr != null) {
-				long shift = pool->arr - pool->oldArr;
+			if (pool->shift != 0) {
+				long shift = pool->shift;
 				for (int j = 0; j < i; j += 1) {
 					ptrs[j] += shift;
 				}
-				pool->oldArr = null;
+				pool->shift = 0;
 			}
 		}
 		LogCase("rand alloc");
@@ -54,12 +54,12 @@ public unsafe class Pool2Benchmark : Benchmark {
 		StartCase();
 		for (int i = 0; i < len; i += 1) {
 			ptrs[i] = (byte *)Pool2.Alloc(pool, sizes[i]);
-			if (pool->oldArr != null) {
-				long shift = pool->arr - pool->oldArr;
+			if (pool->shift != 0) {
+				long shift = pool->shift;
 				for (int j = 0; j < i; j += 1) {
 					ptrs[j] += shift;
 				}
-				pool->oldArr = null;
+				pool->shift = 0;
 			}
 		}
 		LogCase("rand alloc 2");

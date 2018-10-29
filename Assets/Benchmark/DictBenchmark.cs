@@ -3,7 +3,7 @@ using Futilef;
 
 public unsafe class DictBenchmark : Benchmark {
 	protected override string GetTestName() {
-		return "dict";
+		return "Dict";
 	}
 
 	protected override void RunTests() {
