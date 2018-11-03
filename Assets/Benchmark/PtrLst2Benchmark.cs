@@ -8,7 +8,7 @@ public unsafe class PtrLst2Benchmark : Benchmark {
 
 	protected override void RunTests() {
 		var refList = new System.Collections.Generic.List<long>();
-		var lst = stackalloc PtrLst2[1]; PtrLst2.Init(lst);
+		var lst = stackalloc PtrLst[1]; PtrLst.Init(lst);
 
 		StartCase();
 		for (long i = 0; i < 1000000; i += 1) {
@@ -17,7 +17,7 @@ public unsafe class PtrLst2Benchmark : Benchmark {
 		RefCase();
 		StartCase();
 		for (long i = 0; i < 1000000; i += 1) {
-			PtrLst2.Push(lst, (void *)i);
+			PtrLst.Push(lst, (void *)i);
 		}
 		LogCase("push");
 
@@ -48,7 +48,7 @@ public unsafe class PtrLst2Benchmark : Benchmark {
 		StartCase();
 		for (long i = 0; i < 100; i += 1) {
 			if (idx[i] < (1000000 - i)) {
-				PtrLst2.RemoveAt(lst, idx[i]);
+				PtrLst.RemoveAt(lst, idx[i]);
 			}
 		}
 		LogCase("rand remove");
@@ -60,7 +60,7 @@ public unsafe class PtrLst2Benchmark : Benchmark {
 		RefCase();
 		StartCase();
 		for (long i = 0; i < 50000; i += 1) {
-			PtrLst2.Push(lst, (void *)(t + i));
+			PtrLst.Push(lst, (void *)(t + i));
 		}
 		LogCase("re push");
 

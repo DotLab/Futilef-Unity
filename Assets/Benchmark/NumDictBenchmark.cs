@@ -18,7 +18,7 @@ public unsafe class NumDictBenchmark : Benchmark {
 
 		StartCase();
 		for (int i = 2; i < 1000000; i += 1) {
-			NumDict.Add(dict, i, (void *)i);
+			NumDict.Set(dict, i, (void *)i);
 		}
 		LogCase("set");
 
@@ -40,7 +40,7 @@ public unsafe class NumDictBenchmark : Benchmark {
 		RefCase();
 		StartCase();
 		for (int i = 2; i < 1000000; i += 1) {
-			NumDict.Add(dict, i, (void *)i);
+			NumDict.Set(dict, i, (void *)i);
 		}
 		LogCase("re set");
 
