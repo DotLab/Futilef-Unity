@@ -1,0 +1,13 @@
+public static class TypeSizes
+{
+	public const uint Futilef.BmGlyph = 36;
+	public static readonly uint Futilef.NumDict = (uint)sizeof(Futilef.NumDict);
+	public static readonly uint Futilef.NumDict+Entry = (uint)sizeof(Futilef.NumDict+Entry);
+	public static readonly uint Futilef.Pool = (uint)sizeof(Futilef.Pool);
+	public static readonly uint Futilef.PtrLst = (uint)sizeof(Futilef.PtrLst);
+	public const uint Futilef.SortedSet = 24;
+	public static readonly uint Futilef.SortedSet+Node = (uint)sizeof(Futilef.SortedSet+Node);
+	public static readonly uint Futilef.TpAtlasMeta = (uint)sizeof(Futilef.TpAtlasMeta);
+	public static readonly uint Futilef.TpSpriteMeta = (uint)sizeof(Futilef.TpSpriteMeta);
+	public const uint Futilef.TpSprite = 120;
+}

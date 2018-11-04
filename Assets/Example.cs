@@ -48,9 +48,7 @@ public class Example : MonoBehaviour {
 //			gpc.Wait(.5f);
 		}
 
-		#if UNITY_EDITOR
-		Application.targetFrameRate = 60;
-		#endif
+		Application.targetFrameRate = Screen.currentResolution.refreshRate;
 
 		#if FDB
 		Fdb.Test();
