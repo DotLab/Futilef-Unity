@@ -8,7 +8,7 @@ public unsafe class NumDictBenchmark : Benchmark {
 
 	protected override void RunTests() {
 		var refDict = new System.Collections.Generic.Dictionary<int, int>();
-		var dict = stackalloc NumDict[1]; NumDict.Init(dict);
+		var dict = stackalloc PtrIntDict[1]; PtrIntDict.Init(dict);
 
 		StartCase();
 		for (int i = 2; i < 1000000; i += 1) {
@@ -18,7 +18,7 @@ public unsafe class NumDictBenchmark : Benchmark {
 
 		StartCase();
 		for (int i = 2; i < 1000000; i += 1) {
-			NumDict.Set(dict, i, (void *)i);
+			PtrIntDict.Set(dict, i, (void *)i);
 		}
 		LogCase("set");
 
@@ -29,7 +29,7 @@ public unsafe class NumDictBenchmark : Benchmark {
 		RefCase();
 		StartCase();
 		for (int i = 2; i < 1000000; i += 1) {
-			NumDict.Remove(dict, i);
+			PtrIntDict.Remove(dict, i);
 		}
 		LogCase("remove");
 
@@ -40,7 +40,7 @@ public unsafe class NumDictBenchmark : Benchmark {
 		RefCase();
 		StartCase();
 		for (int i = 2; i < 1000000; i += 1) {
-			NumDict.Set(dict, i, (void *)i);
+			PtrIntDict.Set(dict, i, (void *)i);
 		}
 		LogCase("re set");
 
@@ -53,7 +53,7 @@ public unsafe class NumDictBenchmark : Benchmark {
 		k = 0;
 		StartCase();
 		for (int i = 2; i < 1000000; i += 1) {
-			k += (int)NumDict.Get(dict, i);
+			k += (int)PtrIntDict.Get(dict, i);
 		}
 		LogCase("get");
 	}

@@ -3,15 +3,39 @@ using Futilef;
 
 using ImgAttr = Futilef.GpController.ImgAttr;
 
-public class Example : MonoBehaviour {
-	const int frameCounterSize = 500;
-	int frameCounter;
-	float lastCounterTime;
-
+public unsafe class Example : MonoBehaviour {
 	GpController gpc;
+
+	Pool *nodePool;
+	PtrLst *nodeLst;
 
 	void OnEnable() {
 		Res.LoadAtlases(10);
+
+		nodePool = Pool.New();
+
+		nodeLst = PtrLst.New();
+		PtrLst.Push(&nodePool->dependentLst, nodeLst);
+
+		var sprite = (TpSprite *)Pool.Alloc(nodePool, sizeof(TpSprite));
+		TpSprite.Init(sprite, Res.GetSpriteMeta(10001));
+
+		var container = (Group *)Pool.Alloc(nodePool, sizeof(Group));
+		Group.Init(container);
+		PtrLst.Push(&nodePool->dependentLst, &container->childLst);
+
+		PtrLst.Push(nodeLst, sprite);
+		Vec4.Set(sprite->color, 1, 1, 1, 1);
+		Vec2.Set(sprite->scl, .015f, .015f);
+
+		DrawCtx.Start();
+		var arr = (TpSprite **)nodeLst->arr;
+		for (int i = 0, len = nodeLst->count; i < len; i += 1) {
+			Node.Draw(arr[i], null, false);
+		}
+		DrawCtx.Finish();
+
+		return;
 
 		gpc = new GpController();
 
@@ -43,9 +67,7 @@ public class Example : MonoBehaviour {
 
 			gpc.Wait();
 			gpc.RmImg(1);
-//			gpc.Wait(.5f);
 			gpc.RmImg(2);
-//			gpc.Wait(.5f);
 		}
 
 		Application.targetFrameRate = Screen.currentResolution.refreshRate;
@@ -60,7 +82,7 @@ public class Example : MonoBehaviour {
 	}
 	 
 	void OnDisable() {
-		Debug.Log("Clean up ");
-		gpc.Dispose();
+		DrawCtx.Dispose();
+		if (gpc != null) gpc.Dispose();
 	}
 }
