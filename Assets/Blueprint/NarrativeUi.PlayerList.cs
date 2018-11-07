@@ -8,7 +8,7 @@ public unsafe partial struct NarrativeUi {
 	const float PlayerAvatarSize = 115;
 	const float PlayerAvatarMarginTop = 27;
 	const float PlayerAvatarMarginLeft = 37;
-	const float PlayerAvatarSpacing = PlayerAvatarSize + 32;
+	const float PlayerAvatarSpacingY = PlayerAvatarSize + 32;
 
 	const float PlayerBubbleHeight = 78;
 	const float PlayerBubbleWidth = 500;
@@ -46,7 +46,7 @@ public unsafe partial struct NarrativeUi {
 			TpSprite.SetPivot(playerAvatar, Rel.TopLeft);
 			TpSprite.SetPos(playerAvatar, Rel.TopLeft, 
 				PlayerAvatarMarginLeft * Scr2World, 
-				(-PlayerAvatarMarginTop - i * PlayerAvatarSpacing) * Scr2World);
+				(-PlayerAvatarMarginTop - i * PlayerAvatarSpacingY) * Scr2World);
 			TpSprite.SetSize(playerAvatar, 
 				PlayerAvatarSize * Scr2World, 
 				PlayerAvatarSize * Scr2World);
@@ -184,7 +184,7 @@ public unsafe partial struct NarrativeUi {
 			
 			Node.SetPos(playerAvatar, Rel.TopLeft, 
 				Scr2World * PlayerAvatarMarginLeft, 
-				Scr2World * (-PlayerAvatarMarginTop - i * PlayerAvatarSpacing));
+				Scr2World * (-PlayerAvatarMarginTop - i * PlayerAvatarSpacingY));
 			Node.SetOpacity(playerAvatar, 0);
 			Node.SetVisible(playerAvatar, true);
 

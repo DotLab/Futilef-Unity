@@ -8,7 +8,7 @@ public unsafe partial struct NarrativeUi {
 		EsWorker.Init(esWorker);
 
 		InitPlayerList(self);
-		// InitBranching(self);
+		// InitBranchSelection(self);
 		// InitGal(self);
 		// InitMiscButtons(self);
 		// InitFunctionMenu(self);
