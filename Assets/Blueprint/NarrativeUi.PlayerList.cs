@@ -1,7 +1,7 @@
 using Futilef;
 
 #if FBP
-public static unsafe partial class NarrativeUi {
+public unsafe partial struct NarrativeUi {
 	const int PlayerBubbleImgId = 10001;
 	const int PlayerListCount = 5;
 
@@ -24,24 +24,24 @@ public static unsafe partial class NarrativeUi {
 	const float PlayerListTransitionDuration = .6f;
 	const float PlayerListShiftOffset = 20;
 
-	static PtrLst *playerAvatarLst;
-	static PtrLst *playerBubbleLst;
-	static PtrLst *playerBubbleTextLst;
+	fixed TpSprite playerAvatars[PlayerListCount];
+	fixed TpSpriteSliced playerBubbles[PlayerListCount];
+	fixed BmText playerBubbleTexts[PlayerListCount];
 
-	static int playerCount;
+	int playerCount;
 	
-	public static void InitPlayerList() {
-		playerAvatarLst = PtrLst.New();
-		Pool.AddDependent(nodePool, playerAvatarLst);
-		playerBubbleLst = PtrLst.New();
-		Pool.AddDependent(nodePool, playerBubbleLst);
-		playerBubbleTextLst = PtrLst.New();
-		Pool.AddDependent(nodePool, playerBubbleLst);
+	public static void InitPlayerList(NarrativeUi *self) {
+		var playerAvatars = self->playerAvatars;
+		var playerBubbles = self->playerBubbles;
+		var playerBubbleTexts = self->playerBubbleTexts;
 
 		float Scr2World = Scr.Scr2World;
 
 		for (int i = 0; i < PlayerListCount; i += 1) {
-			var playerAvatar = (TpSprite *)Pool.Alloc(nodePool, sizeof(TpSprite));
+			var playerAvatar = playerAvatars + i;
+			var playerBubble = playerBubbles + i;
+			var playerBubbleText = playerBubbleTexts + i;
+
 			TpSprite.Init(playerAvatar);
 			TpSprite.SetPivot(playerAvatar, Rel.TopLeft);
 			TpSprite.SetPos(playerAvatar, Rel.TopLeft, 
@@ -52,7 +52,6 @@ public static unsafe partial class NarrativeUi {
 				PlayerAvatarSize * Scr2World);
 			PtrLst.Push(playerAvatarLst, playerAvatar);
 
-			var playerBubble = (TpSpriteSliced *)Pool.Alloc(nodePool, sizeof(TpSpriteSliced));
 			TpSpriteSliced.Init(playerBubble, Res.GetTpSpriteMeta(PlayerBubbleImgId));
 			TpSpriteSliced.SetPivot(playerBubble, Rel.TopLeft);
 			TpSpriteSliced.SetPosRel(playerBubble, playerAvatar, Rel.TopRight, 
@@ -64,7 +63,6 @@ public static unsafe partial class NarrativeUi {
 			TpSpriteSliced.SetVisible(playerBubble, false);
 			PtrLst.Push(playerBubbleLst, playerBubble);
 
-			var playerBubbleText = (BmText *)Pool.Alloc(nodePool, sizeof(BmText));
 			BmText.Init(playerBubbleText);
 			BmText.Pivot(playerBubbleText, Rel.TopLeft);
 			BmText.SetPosRel(playerBubbleText, playerBubble, Rel.TopLeft, 
@@ -78,10 +76,10 @@ public static unsafe partial class NarrativeUi {
 		}
 	}
 
-	public static void SetPlayerAvatars(int[] playerAvatarImgIds) {
-		var playerAvatarArr = playerAvatarLst->arr;
-		var playerBubbleArr = playerBubbleLst->arr;
-		var playerBubbleTextArr = playerBubbleTextLst->arr;
+	public static void SetPlayerAvatars(NarrativeUi *self, int[] playerAvatarImgIds) {
+		var playerAvatars = self->playerAvatars;
+		var playerBubbles = self->playerBubbles;
+		var playerBubbleTexts = self->playerBubbleTexts;
 
 		int oldPlayerCount = playerCount;
 		playerCount = playerAvatarImgIds.Length;
@@ -90,9 +88,9 @@ public static unsafe partial class NarrativeUi {
 
 		var job = EsWorker.PrepBatch(esWorker, Es.CubicOut, PlayerListTransitionDuration);
 		for (int i = 0; i < oldPlayerCount; i += 1) {
-			var playerAvatar = playerAvatarArr[i];
-			var playerBubble = playerBubbleArr[i];
-			var playerBubbleText = playerBubbleTextArr[i];
+			var playerAvatar = playerAvatars + i;
+			var playerBubble = playerBubbles + i;
+			var playerBubbleText = playerBubbleTexts + i;
 
 			if (i < playerCount) {  // already showing, switch
 				TpSprite.SetMeta(playerAvatar, Res.GetTpSpriteMeta(playerAvatarImgIds[i]));
@@ -115,41 +113,29 @@ public static unsafe partial class NarrativeUi {
 		for (int i = oldPlayerCount; i < playerCount; i += 1) {  // not showing, show
 			var playerAvatar = playerAvatarArr[i];	
 
-			TpSprite.SetMeta(playerAvatar, Res.GetTpSpriteMeta(playerAvatarImgIds[i]));
+			Node.SetMeta(playerAvatar, Res.GetTpSpriteMeta(playerAvatarImgIds[i]));
 			Node.SetOpacity(playerAvatar, 0);
 			Node.SetVisible(playerAvatar, true);
 			EsBatchJob.RestoreScaleAlt(playerAvatar, Rel.Center, 0, 0, Es.BackOut);
 			EsBatchJob.SetOpacity(playerAvatar, 1);
 		}
 		EsWorker.ExecBatch(esWorker, job);
-
-		for (int i = 0; i < playerCount; i += 1) {
-			TpSprite.SetMeta(playerAvatarArr[i], Res.GetTpSpriteMeta(playerAvatarImgIds[i]));
-			TpSprite.SetVisible(playerAvatarArr[i], true);
-			TpSpriteSliced.SetVisible(playerBubbleArr[i], false);  // hide messages when avatar changes
-			BmText.SetVisible(playerBubbleTextArr[i], false);
-		}
-
-		for (int i = 0; i < oldPlayerCount; i += 1) {
-			TpSprite.SetVisible(playerAvatarArr[i], false);
-			TpSpriteSliced.SetVisible(playerBubbleArr[i], false);  // hide messages when avatar changes
-			BmText.SetVisible(playerBubbleTextArr[i], false);
-		}
 	}
 
-	public static void SetPlayerBubbleText(int playerIdx, string message) {
-		var playerBubble = playerBubbleLst->arr[playerIdx];
-		var playerBubbleText = playerBubbleTextLst->arr[playerIdx];
+	public static void SetPlayerBubbleText(NarrativeUi *self, int playerIdx, string message) {
+		var playerAvatar = self->playerAvatars[playerIdx];
+		var playerBubble = self->playerBubbles[playerIdx];
+		var playerBubbleText = self->playerBubbleTexts[playerIdx];
 
 		float Scr2World = Scr.Scr2World;
 
-		BmText.SetText(playerBubbleText, message);
-		float height = BmText.GetHeight(playerBubbleText);
-		BmText.SetScale(playerBubbleText, 1, .5f);
-		BmText.SetOpacity(playerBubbleText, 0);
-		BmText.SetVisible(playerBubbleText, true);
+		Node.SetText(playerBubbleText, message);
+		float height = Node.GetHeight(playerBubbleText);
+		Node.SetScale(playerBubbleText, 1, .5f);
+		Node.SetOpacity(playerBubbleText, 0);
+		Node.SetVisible(playerBubbleText, true);
 
-		height += Scr2World * (PlayerBubbleTextMarginTop + PlayerBubbleTextMarginTop);
+		height += (PlayerBubbleTextMarginTop + PlayerBubbleTextMarginTop) * Scr2World;
 
 		var job = EsWorker.PrepBatch(esWorker, Es.CubicOut, PlayerListTransitionDuration);
 		if (!playerBubble->isVisible) {  // not visible -> fade in from top
@@ -170,9 +156,10 @@ public static unsafe partial class NarrativeUi {
 		EsWorker.ExecBatch(esWorker, job);
 	}
 
-	public static void HidePlayerBubbleText(int playerIdx) {
-		var playerBubble = playerBubbleLst->arr[i];
-		var playerBubbleText = playerBubbleTextLst->arr[i];
+	public static void HidePlayerBubble(NarrativeUi *self, int playerIdx) {
+		var playerAvatars = self->playerAvatars;
+		var playerBubbles = self->playerBubbles;
+		var playerBubbleTexts = self->playerBubbleTexts;
 
 		float Scr2World = Scr.Scr2World;
 
@@ -184,15 +171,15 @@ public static unsafe partial class NarrativeUi {
 		EsWorker.ExecBatch(esWorker, job);
 	}
 
-	public static void ShowPlayerList() {
-		var playerAvatarArr = playerAvatarLst->arr;
-		var playerBubbleArr = playerBubbleLst->arr;
-		var playerBubbleTextArr = playerBubbleTextLst->arr;
+	public static void ShowPlayerList(NarrativeUi *self) {
+		var playerAvatars = self->playerAvatars;
+		var playerBubbles = self->playerBubbles;
+		var playerBubbleTexts = self->playerBubbleTexts;
 
 		float Scr2World = Scr.Scr2World;
 
 		var job = EsWorker.PrepBatch(esWorker, Es.CubicOut, PlayerListTransitionDuration);
-		for (int i = 0; i < playerCount; i += 1) {
+		for (int i = 0, count = self->playerCount; i < count; i += 1) {
 			var playerAvatar = playerAvatarArr[i];
 			
 			Node.SetPos(playerAvatar, Rel.TopLeft, 
@@ -207,15 +194,15 @@ public static unsafe partial class NarrativeUi {
 		EsWorker.ExecBatch(esWorker, job);
 	}
 
-	public static void HidePlayerList() {
-		var playerAvatarArr = playerAvatarLst->arr;
-		var playerBubbleArr = playerBubbleLst->arr;
-		var playerBubbleTextArr = playerBubbleTextLst->arr;
+	public static void HidePlayerList(NarrativeUi *self) {
+		var playerAvatars = self->playerAvatars;
+		var playerBubbles = self->playerBubbles;
+		var playerBubbleTexts = self->playerBubbleTexts;
 
 		float Scr2World = Scr.Scr2World;
 
 		var job = EsWorker.PrepBatch(esWorker, Es.CubicOut, PlayerListTransitionDuration);
-		for (int i = 0; i < playerCount; i += 1) {
+		for (int i = 0, count = self->playerCount; i < count; i += 1) {
 			var playerAvatar = playerAvatarArr[i];
 			var playerBubble = playerBubbleArr[i];
 			var playerBubbleText = playerBubbleTextArr[i];
@@ -231,6 +218,26 @@ public static unsafe partial class NarrativeUi {
 			}
 		}
 		EsWorker.ExecBatch(esWorker, job);
+	}
+
+	static void TouchPlayerList(NarrativeUi *self, Tch *tches, int tchCount) {
+		var playerBubbles = self->playerBubbles;
+		
+		// HidePlayerBubble if touched on the bubble
+		for (int i = 0, count = self->playerCount; i < count; i += 1) {
+			var playerBubble = playerBubbles[i];
+
+			if (playerBubble->isVisible) {
+				for (int i = 0; i < tchCount; i += 1) {
+					var tch = tches + i;
+					if (tch->phase == TchPhase.Enter && Node.Raycast(playerBubble, tch->pos)) {
+						HidePlayerBubble(self, i);
+						break;
+					}
+				}
+			}
+		}
+
 	}
 }
 #endif
