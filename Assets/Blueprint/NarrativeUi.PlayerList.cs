@@ -35,24 +35,27 @@ public static unsafe partial class NarrativeUi {
 		for (int i = 0; i < PlayerListCount; i += 1) {
 			var playerAvatar = (TpSprite *)Pool.Alloc(nodePool, sizeof(TpSprite));
 			TpSprite.Init(playerAvatar);
-			TpSprite.SetScrSize(playerAvatar, PlayerAvatarSize, PlayerAvatarSize);
-			TpSprite.SetScrPos(playerAvatar, Rel.TopLeft, Rel.TopLeft, 
+			TpSprite.SetPivot(playerAvatar, Rel.TopLeft);
+			TpSprite.SetScrPos(playerAvatar, Rel.TopLeft,
 				PlayerAvatarMarginLeft, -PlayerAvatarMarginTop - i * PlayerAvatarSpacing);
+			TpSprite.SetScrSize(playerAvatar, PlayerAvatarSize, PlayerAvatarSize);
 			PtrLst.Push(playerAvatarLst, playerAvatar);
 
 			var playerBubble = (TpSpriteSliced *)Pool.Alloc(nodePool, sizeof(TpSpriteSliced));
 			TpSpriteSliced.Init(playerBubble, Res.GetTpSpriteMeta(PlayerBubbleImgId));
-			TpSpriteSliced.SetScrSize(playerBubble, PlayerBubbleWidth, PlayerBubbleHeight);
-			TpSpriteSliced.SetScrPosRel(playerBubble, playerAvatar, Rel.TopRight, Rel.TopLeft,
+			TpSpriteSliced.SetPivot(playerBubble, Rel.TopLeft);
+			TpSpriteSliced.SetScrPosRel(playerBubble, playerAvatar, Rel.TopRight,
 				PlayerBubbleMarginLeft, -PlayerBubbleMarginTop);
+			TpSpriteSliced.SetScrSize(playerBubble, PlayerBubbleWidth, PlayerBubbleHeight);
 			TpSpriteSliced.SetVisible(playerBubble, false);
 			PtrLst.Push(playerBubbleLst, playerBubble);
 
 			var playerBubbleText = (BmText *)Pool.Alloc(nodePool, sizeof(BmText));
 			BmText.Init(playerBubbleText);
-			BmText.SetScrLineWidth(playerBubbleText, PlayerBubbleTextLineWidth);
-			BmText.SetScrPosRel(playerBubbleText, playerBubble, Rel.TopLeft, Rel.TopLeft,
+			BmText.Pivot(playerBubbleText, Rel.TopLeft);
+			BmText.SetScrPosRel(playerBubbleText, playerBubble, Rel.TopLeft,
 				PlayerBubbleTextMarginLeft, -PlayerBubbleTextMarginTop);
+			BmText.SetScrLineWidth(playerBubbleText, PlayerBubbleTextLineWidth);
 			BmText.SetVisible(playerBubbleText, false);
 			PtrLst.Push(playerBubbleTextLst, playerBubbleText);
 		}
@@ -78,17 +81,43 @@ public static unsafe partial class NarrativeUi {
 	}
 
 	public static void SetPlayerBubbleText(int playerIdx, string message) {
-		var playerBubbleText = playerBubbleTextLst->arr;
-		BmText.SetText();
+		var playerBubbleText = playerBubbleTextLst->arr[playerIdx];
+		BmText.SetText(playerBubbleText, message);
+		float height = BmText.GetScrHeight(playerBubbleText);
+		BmText.SetVisible(playerBubbleText, true);
+
+		var playerBubble = playerBubbleLst->arr[playerIdx];
+		TpSpriteSliced.SetScrHeight(playerBubble, height + PlayerBubbleTextMarginTop + PlayerBubbleTextMarginTop);
+		TpSpriteSliced.SetVisible(playerBubble, true);
 	}
 
 	public static void HidePlayerBubbleText(int playerIdx) {
+		TpSpriteSliced.SetVisible(playerBubbleLst->arr[playerIdx], false);
+		BmText.SetVisible(playerBubbleTextLst->arr[playerIdx], false);
 	}
 
 	public static void ShowPlayerList() {
+		var playerAvatarArr = playerAvatarLst->arr;
+		var playerBubbleArr = playerBubbleLst->arr;
+		var playerBubbleTextArr = playerBubbleTextLst->arr;
+
+		for (int i = 0; i < PlayerListCount; i += 1) {
+			TpSprite.SetVisible(playerAvatarArr[playerIdx], false);
+			TpSpriteSliced.SetVisible(playerBubbleArr[playerIdx], false);
+			BmText.SetVisible(playerBubbleTextArr[playerIdx], false);
+		}
 	}
 
 	public static void HidePlayerList() {
+		var playerAvatarArr = playerAvatarLst->arr;
+		var playerBubbleArr = playerBubbleLst->arr;
+		var playerBubbleTextArr = playerBubbleTextLst->arr;
+
+		for (int i = 0; i < PlayerListCount; i += 1) {
+			TpSprite.SetVisible(playerAvatarArr[playerIdx], true);
+			TpSpriteSliced.SetVisible(playerBubbleArr[playerIdx], true);
+			BmText.SetVisible(playerBubbleTextArr[playerIdx], true);
+		}
 	}
 }
 #endif
