@@ -23,7 +23,7 @@ public unsafe partial struct NarrativeUi {
 	fixed BmText branchOptionTexts[BranchOptionCount];
 	fixed TpSprite branchOptionVotes[BranchOptionCount * BranchOptionVoteCount];
 
-	fixed int optionCount;
+	int optionCount;
 	fixed int voteCounts[BranchOptionCount];
 
 	
