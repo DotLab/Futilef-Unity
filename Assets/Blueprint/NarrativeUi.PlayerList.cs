@@ -45,34 +45,31 @@ public unsafe partial struct NarrativeUi {
 			TpSprite.Init(playerAvatar);
 			TpSprite.SetPivot(playerAvatar, Rel.TopLeft);
 			TpSprite.SetPos(playerAvatar, Rel.TopLeft, 
-				PlayerAvatarMarginLeft * Scr2World, 
-				(-PlayerAvatarMarginTop - i * PlayerAvatarSpacingY) * Scr2World);
+				Scr2World * PlayerAvatarMarginLeft, 
+				-Scr2World * (PlayerAvatarMarginTop + i * PlayerAvatarSpacingY));
 			TpSprite.SetSize(playerAvatar, 
-				PlayerAvatarSize * Scr2World, 
-				PlayerAvatarSize * Scr2World);
-			PtrLst.Push(playerAvatarLst, playerAvatar);
+				Scr2World * PlayerAvatarSize, 
+				Scr2World * PlayerAvatarSize);
 
 			TpSpriteSliced.Init(playerBubble, Res.GetTpSpriteMeta(PlayerBubbleImgId));
 			TpSpriteSliced.SetPivot(playerBubble, Rel.TopLeft);
 			TpSpriteSliced.SetPosRel(playerBubble, playerAvatar, Rel.TopRight, 
-				PlayerBubbleMarginLeft * Scr2World, 
-				-PlayerBubbleMarginTop * Scr2World);
+				Scr2World * PlayerBubbleMarginLeft, 
+				-Scr2World * PlayerBubbleMarginTop);
 			TpSpriteSliced.SetSize(playerBubble, 
-				PlayerBubbleWidth * Scr2World, 
-				PlayerBubbleHeight * Scr2World);
+				Scr2World * PlayerBubbleWidth, 
+				Scr2World * PlayerBubbleHeight);
 			TpSpriteSliced.SetVisible(playerBubble, false);
-			PtrLst.Push(playerBubbleLst, playerBubble);
 
 			BmText.Init(playerBubbleText);
-			BmText.Pivot(playerBubbleText, Rel.TopLeft);
+			BmText.SetPivot(playerBubbleText, Rel.TopLeft);
 			BmText.SetPosRel(playerBubbleText, playerBubble, Rel.TopLeft, 
-				PlayerBubbleTextMarginLeft * Scr2World, 
-				-PlayerBubbleTextMarginTop * Scr2World);
-			BmText.SetFontSize(playerBubbleText, PlayerBubbleTextFontSize * Scr2World);
-			BmText.SetLineWidth(playerBubbleText, PlayerBubbleTextLineWidth * Scr2World);
-			BmText.SetLineSpacing(playerBubbleText, PlayerBubbleTextLineSpacing * Scr2World);
+				Scr2World * PlayerBubbleTextMarginLeft, 
+				-Scr2World * PlayerBubbleTextMarginTop);
+			BmText.SetFontSize(playerBubbleText, Scr2World * PlayerBubbleTextFontSize);
+			BmText.SetLineWidth(playerBubbleText, Scr2World * PlayerBubbleTextLineWidth);
+			BmText.SetLineSpacing(playerBubbleText, Scr2World * PlayerBubbleTextLineSpacing);
 			BmText.SetVisible(playerBubbleText, false);
-			PtrLst.Push(playerBubbleTextLst, playerBubbleText);
 		}
 	}
 
@@ -135,7 +132,7 @@ public unsafe partial struct NarrativeUi {
 		Node.SetOpacity(playerBubbleText, 0);
 		Node.SetVisible(playerBubbleText, true);
 
-		height += (PlayerBubbleTextMarginTop + PlayerBubbleTextMarginTop) * Scr2World;
+		height += Scr2World * (PlayerBubbleTextMarginTop + PlayerBubbleTextMarginTop);
 
 		var job = EsWorker.PrepBatch(esWorker, Es.CubicOut, PlayerListTransitionDuration);
 		if (!playerBubble->isVisible) {  // not visible -> fade in from top
