@@ -11,7 +11,8 @@ public unsafe class Example : MonoBehaviour {
 
 	void OnEnable() {
 		Res.LoadAtlases(10);
-
+		
+		#if GPC_TEST
 		nodePool = Pool.New();
 
 		nodeLst = PtrLst.New();
@@ -36,6 +37,7 @@ public unsafe class Example : MonoBehaviour {
 		DrawCtx.Finish();
 
 		return;
+		#endif
 
 		gpc = new GpController();
 
