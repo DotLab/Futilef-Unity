@@ -72,6 +72,9 @@ public unsafe class Example : MonoBehaviour {
 			gpc.SetImgAttrEased(2, ImgAttr.Position, 4f, EsType.ElasticOut, -2f, 2f, 0f);
 
 			gpc.Wait();
+			gpc.SetImgId(2, 103);
+
+			gpc.Wait();
 			gpc.SetImgAttrEased(1, ImgAttr.Tint, 1f, EsType.ElasticOut, 1.5f, 1.5f, 1.5f);
 
 			gpc.Wait();
