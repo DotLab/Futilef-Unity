@@ -42,7 +42,6 @@ public unsafe class Example : MonoBehaviour {
 
 		gpc = new GpController(Camera.main);
 
-
 		for (int i = 0; i < 5; i += 1) {
 			gpc.SetCamAttr(CamAttr.Position, 0f, 0f);
 			gpc.SetCamAttr(CamAttr.Zoom, 5f);
@@ -86,7 +85,6 @@ public unsafe class Example : MonoBehaviour {
 			gpc.RmImg(1);
 			gpc.RmImg(2);
 		}
-		gpc.Wait(10);
 
 		Application.targetFrameRate = Screen.currentResolution.refreshRate;
 
@@ -100,6 +98,7 @@ public unsafe class Example : MonoBehaviour {
 	}
 	 
 	void OnDisable() {
+		Res.ReleaseAtlases(10);
 		DrawCtx.Dispose();
 		if (gpc != null) gpc.Dispose();
 	}
