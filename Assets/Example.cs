@@ -2,6 +2,7 @@
 using Futilef;
 
 using ImgAttr = Futilef.GpController.ImgAttr;
+using CamAttr = Futilef.GpController.CamAttr;
 
 public unsafe class Example : MonoBehaviour {
 	GpController gpc;
@@ -39,9 +40,12 @@ public unsafe class Example : MonoBehaviour {
 		return;
 		#endif
 
-		gpc = new GpController();
+		gpc = new GpController(Camera.main);
 
 		for (int i = 0; i < 5; i += 1) {
+			gpc.SetCamAttr(CamAttr.Position, 0f, 0f);
+			gpc.SetCamAttr(CamAttr.Zoom, 5f);
+
 			gpc.AddImg(1, 10001);
 			gpc.SetImgAttr(1, ImgAttr.Position, 0f, 0f, 0f);
 			gpc.SetImgAttr(1, ImgAttr.Rotation, 0f);
@@ -54,6 +58,9 @@ public unsafe class Example : MonoBehaviour {
 			gpc.SetImgAttrEased(1, ImgAttr.Tint, 1.5f, EsType.ElasticOut, 1f, 1f, 1f);
 			gpc.SetImgAttrEased(1, ImgAttr.Position, 2f, EsType.ElasticOut, -2f, 2f, 0f);
 			gpc.SetImgAttrEased(1, ImgAttr.Rotation, 1.5f, EsType.ElasticOut, Mathf.PI * 2.5f);
+
+			gpc.SetCamAttrEased(CamAttr.Zoom, 1.5f, EsType.ElasticOut, 2f);
+			gpc.SetCamAttrEased(CamAttr.Position, 2f, EsType.ElasticOut, -2f, 2f);
 
 			gpc.Wait(.5f);
 			gpc.AddImg(2, 10001);
