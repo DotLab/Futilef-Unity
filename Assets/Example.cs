@@ -42,11 +42,13 @@ public unsafe class Example : MonoBehaviour {
 
 		gpc = new GpController(Camera.main);
 
+
 		for (int i = 0; i < 5; i += 1) {
 			gpc.SetCamAttr(CamAttr.Position, 0f, 0f);
 			gpc.SetCamAttr(CamAttr.Zoom, 5f);
 
 			gpc.AddImg(1, 10001);
+			gpc.SetImgInteractable(1, (phase, x, y) => Debug.LogFormat("hit img1: phase {0}, x {1}, y {2}", phase, x, y));
 			gpc.SetImgAttr(1, ImgAttr.Position, 0f, 0f, 0f);
 			gpc.SetImgAttr(1, ImgAttr.Rotation, 0f);
 			gpc.SetImgAttr(1, ImgAttr.Alpha, 1f);
@@ -64,12 +66,15 @@ public unsafe class Example : MonoBehaviour {
 
 			gpc.Wait(.5f);
 			gpc.AddImg(2, 10001);
+			gpc.SetImgInteractable(2, (phase, x, y) => Debug.LogFormat("hit img2: phase {0}, x {1}, y {2}", phase, x, y));
 			gpc.SetImgAttr(2, ImgAttr.Position, 0f, 0f, -5f);
 			gpc.SetImgAttr(2, ImgAttr.Rotation, 0f);
 			gpc.SetImgAttr(2, ImgAttr.Scale, 0.1f, 0.1f);
 			gpc.SetImgAttr(2, ImgAttr.Alpha, 1f);
 			gpc.SetImgAttrEased(2, ImgAttr.Scale, 1f, EsType.ElasticOut, 0.006f, 0.006f);
 			gpc.SetImgAttrEased(2, ImgAttr.Position, 4f, EsType.ElasticOut, -2f, 2f, 0f);
+
+			gpc.SetImgInteractable(1, null);
 
 			gpc.Wait();
 			gpc.SetImgId(2, 103);
@@ -81,6 +86,7 @@ public unsafe class Example : MonoBehaviour {
 			gpc.RmImg(1);
 			gpc.RmImg(2);
 		}
+		gpc.Wait(10);
 
 		Application.targetFrameRate = Screen.currentResolution.refreshRate;
 
